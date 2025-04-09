@@ -113,7 +113,6 @@ public class FPSController : MonoBehaviour
 
     private void OnMoveInput(InputAction.CallbackContext context)
     {
-        Debug.Log("On Movement");
         moveInput = context.ReadValue<Vector2>();
 
         // Determine if we're running
@@ -137,12 +136,14 @@ public class FPSController : MonoBehaviour
 
     private void OnInteractPrimary(InputAction.CallbackContext context)
     {
+        Debug.Log("Interacting primary");
         // Primary interaction (E key or Left Mouse Button)
         TryInteractPrimary();
     }
 
     private void OnInteractSecondary(InputAction.CallbackContext context)
     {
+        Debug.Log("Interacting secondary");
         // Secondary interaction (Right Mouse Button)
         TryInteractSecondary();
     }
@@ -192,7 +193,6 @@ public class FPSController : MonoBehaviour
         // Calculate movement direction relative to camera orientation
         float moveX = moveInput.x;
         float moveZ = moveInput.y;
-        Debug.Log(moveInput);
 
         Vector3 move = transform.right * moveX + transform.forward * moveZ;
         move = Vector3.ClampMagnitude(move, 1f); // Normalize the vector to prevent faster diagonal movement
