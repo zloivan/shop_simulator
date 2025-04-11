@@ -19,6 +19,7 @@ namespace _GAME.Scripts
         private void Awake()
         {
             audioSource = GetComponent<AudioSource>();
+            
             if (audioSource == null && (pickupSound != null || examineSound != null))
             {
                 audioSource = gameObject.AddComponent<AudioSource>();
@@ -38,7 +39,7 @@ namespace _GAME.Scripts
             if (canPickUp)
             {
                 // Add to inventory or perform other actions
-
+                
                 // Optionally destroy the object
                 if (destroyOnPickup)
                 {

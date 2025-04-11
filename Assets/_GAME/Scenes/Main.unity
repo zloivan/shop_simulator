@@ -1145,8 +1145,8 @@ MonoBehaviour:
   jumpForce: 5
   gravity: -19.62
   airControl: 0.5
-  lookSensitivity: 1
-  lookSmoothing: 0.1
+  lookSensitivity: 0.8
+  lookSmoothing: 0
   lookXLimit: 80
   interactionDistance: 2.5
   interactionLayer:
