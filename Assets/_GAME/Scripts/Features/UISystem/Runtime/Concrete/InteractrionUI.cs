@@ -10,17 +10,15 @@ namespace Sim.Features.UISystem.Runtime.Concrete
     {
         [SerializeField] private Image crosshair;
         [SerializeField] private TextMeshProUGUI interactText;
-        [SerializeField] private FPSController playerController;
+        [SerializeField] private FPSControllerNew playerController;
         [SerializeField] private float interactDistance = 2.5f;
 
         [Header("UI Colors")]
         [SerializeField] private Color defaultCrosshairColor = Color.white;
-
         [SerializeField] private Color interactableCrosshairColor = Color.green;
 
         [Header("UI Prompts")]
         [SerializeField] private string primaryInteractPrompt = "Press E or Left-click to interact";
-
         [SerializeField] private string secondaryInteractPrompt = "Right-click to examine";
 
         private void Update()

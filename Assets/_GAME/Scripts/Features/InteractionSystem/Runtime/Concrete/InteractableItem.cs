@@ -28,7 +28,7 @@ namespace Sim.Features.InteractionSystem.Concrete
             }
         }
 
-        public void InteractPrimary(FPSController player)
+        public void InteractPrimary(FPSControllerNew player)
         {
             // Primary interaction (e.g., pick up)
             Debug.Log(primaryInteractionMessage);
@@ -62,7 +62,7 @@ namespace Sim.Features.InteractionSystem.Concrete
             }
         }
 
-        public void InteractSecondary(FPSController player)
+        public void InteractSecondary(FPSControllerNew player)
         {
             // Secondary interaction (e.g., examine)
             Debug.Log(secondaryInteractionMessage);
