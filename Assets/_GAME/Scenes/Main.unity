@@ -450,7 +450,7 @@ MonoBehaviour:
   _playerController: {fileID: 889582384}
   _defaultCrosshairColor: {r: 1, g: 1, b: 1, a: 1}
   _interactableCrosshairColor: {r: 0, g: 1, b: 0, a: 1}
-  _primaryInteractPrompt: Press E or Left-click to interact
+  _primaryInteractPrompt: Press Right-click or Left-click to interact
   _secondaryInteractPrompt: Right-click to examine
 --- !u!1 &320104977
 GameObject:
