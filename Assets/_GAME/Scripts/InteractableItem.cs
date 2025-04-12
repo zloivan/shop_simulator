@@ -1,6 +1,7 @@
+using Sim.Features.InteractionSystem.Base;
 using UnityEngine;
 
-namespace _GAME.Scripts
+namespace Sim
 {
     public class InteractableItem : MonoBehaviour, IInteractable
     {

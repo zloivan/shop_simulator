@@ -1,4 +1,4 @@
-namespace _GAME.Scripts
+namespace Sim.Features.InteractionSystem.Base
 {
      public interface IInteractable
     {

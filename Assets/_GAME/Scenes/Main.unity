@@ -1148,12 +1148,15 @@ MonoBehaviour:
   lookSensitivity: 0.8
   lookSmoothing: 0
   lookXLimit: 80
-  interactionDistance: 2.5
+  interactionDistance: 17.22
   interactionLayer:
     serializedVersion: 2
     m_Bits: 4294967295
   cameraHolder: {fileID: 766418027}
   interactionRayOrigin: {fileID: 766418027}
+  showInteractionRays: 1
+  primaryRayColor: {r: 0, g: 0, b: 1, a: 1}
+  secondaryRayColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &889582382
 MonoBehaviour:
   m_ObjectHideFlags: 0
