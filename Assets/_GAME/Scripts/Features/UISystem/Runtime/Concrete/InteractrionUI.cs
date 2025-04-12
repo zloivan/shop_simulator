@@ -1,9 +1,10 @@
 using Sim.Features.InteractionSystem.Base;
+using Sim.Features.PlayerSystem.Concrete;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Sim
+namespace Sim.Features.UISystem.Runtime.Concrete
 {
     public class InteractionUI : MonoBehaviour
     {

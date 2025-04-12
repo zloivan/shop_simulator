@@ -1,7 +1,8 @@
 using Sim.Features.InteractionSystem.Base;
+using Sim.Features.PlayerSystem.Concrete;
 using UnityEngine;
 
-namespace Sim
+namespace Sim.Features.InteractionSystem.Concrete
 {
     public class InteractableItem : MonoBehaviour, IInteractable
     {
