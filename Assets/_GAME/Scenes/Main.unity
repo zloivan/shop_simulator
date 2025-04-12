@@ -445,14 +445,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74ddc0c6471a4e029cfa1671d185767a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  crosshair: {fileID: 554564866}
-  interactText: {fileID: 130301417}
-  playerController: {fileID: 889582381}
-  interactDistance: 2.5
-  defaultCrosshairColor: {r: 1, g: 1, b: 1, a: 1}
-  interactableCrosshairColor: {r: 0, g: 1, b: 0, a: 1}
-  primaryInteractPrompt: Press E or Left-click to interact
-  secondaryInteractPrompt: Right-click to examine
+  _crosshair: {fileID: 554564866}
+  _interactText: {fileID: 130301417}
+  _playerController: {fileID: 889582384}
+  _defaultCrosshairColor: {r: 1, g: 1, b: 1, a: 1}
+  _interactableCrosshairColor: {r: 0, g: 1, b: 0, a: 1}
+  _primaryInteractPrompt: Press E or Left-click to interact
+  _secondaryInteractPrompt: Right-click to examine
 --- !u!1 &320104977
 GameObject:
   m_ObjectHideFlags: 0
@@ -1100,9 +1099,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 889582380}
-  - component: {fileID: 889582381}
   - component: {fileID: 889582382}
   - component: {fileID: 889582383}
+  - component: {fileID: 889582388}
+  - component: {fileID: 889582387}
+  - component: {fileID: 889582386}
+  - component: {fileID: 889582385}
+  - component: {fileID: 889582384}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1127,36 +1130,6 @@ Transform:
   - {fileID: 766418027}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &889582381
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 889582379}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06144711c64ec424ba9683dd6dbed6ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  walkSpeed: 5
-  runSpeed: 7
-  sprintSpeed: 10
-  jumpForce: 5
-  gravity: -19.62
-  airControl: 0.5
-  lookSensitivity: 0.8
-  lookSmoothing: 0
-  lookXLimit: 80
-  interactionDistance: 17.22
-  interactionLayer:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  cameraHolder: {fileID: 766418027}
-  interactionRayOrigin: {fileID: 766418027}
-  showInteractionRays: 1
-  primaryRayColor: {r: 0, g: 0, b: 1, a: 1}
-  secondaryRayColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!114 &889582382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1214,6 +1187,85 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &889582384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889582379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56c52c06a6f54fc8bb95ff4901baf3cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cameraHolder: {fileID: 766418027}
+--- !u!114 &889582385
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889582379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f570bc7bf9044469b05c62df96479c16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactionDistance: 21.71
+  _interactionLayer:
+    serializedVersion: 2
+    m_Bits: 55
+  _interactionRayOrigin: {fileID: 766418027}
+  _showInteractionRays: 1
+  _primaryRayColor: {r: 0, g: 0, b: 1, a: 1}
+  _secondaryRayColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &889582386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889582379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23f8455c4a524b83ab106b1fcab57d85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cameraHolder: {fileID: 766418027}
+  _lookSensitivity: 1
+  _lookSmoothing: 0
+  _lookXLimit: 80
+--- !u!114 &889582387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889582379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 940aaaeb36454bd2a29506fa8b98a210, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _walkSpeed: 5
+  _runSpeed: 7
+  _sprintSpeed: 10
+  _jumpForce: 5
+  _gravity: -19.62
+  _airControl: 0.5
+--- !u!114 &889582388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889582379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a69f60e7961446bb3ba83f3a27d7f10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1002196200
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1448,7 +1500,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
 --- !u!114 &1208445497
 MonoBehaviour:
   m_ObjectHideFlags: 0
