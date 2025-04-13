@@ -41,10 +41,8 @@ namespace Sim.Features.UISystem.Runtime.Concrete
             if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit,
                     _playerController.InteractionDistance))
             {
-                Debug.Log("Hitting");
                 if (hit.collider.GetComponent<IInteractable>() != null)
                 {
-                    Debug.Log("Interactable object detected");
                     // Change crosshair color and show text
                     _crosshair.color = _interactableCrosshairColor;
 

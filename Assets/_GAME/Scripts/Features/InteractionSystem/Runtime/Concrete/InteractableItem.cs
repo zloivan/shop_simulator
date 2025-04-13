@@ -1,9 +1,11 @@
+using System;
 using Sim.Features.InteractionSystem.Base;
 using Sim.Features.PlayerSystem.Concrete;
 using UnityEngine;
 
 namespace Sim.Features.InteractionSystem.Concrete
 {
+    
     public class InteractableItem : MonoBehaviour, IInteractable
     {
         [SerializeField] private string itemName = "Item";
@@ -26,6 +28,11 @@ namespace Sim.Features.InteractionSystem.Concrete
             {
                 audioSource = gameObject.AddComponent<AudioSource>();
             }
+        }
+
+        private void OnValidate()
+        {
+            gameObject.name = $"{itemName} (InteractableItem)";
         }
 
         public void InteractPrimary(FPSControllerNew player)
