@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 
 namespace Sim.Features.PlayerSystem.Concrete
@@ -20,30 +21,25 @@ namespace Sim.Features.PlayerSystem.Concrete
 
         private CharacterController _characterController;
         private PlayerInputHandler _inputHandler;
-        private Transform _cameraTransform;
 
         // Состояние движения
         private Vector3 _verticalVelocity;
-        private float _currentSpeed;
-        private bool _isGrounded;
         private bool _wantsToJump;
 
         // Публичные свойства для внешнего доступа
-        public Vector3 MovementDirection { get; private set; }
-        public bool IsGrounded => _isGrounded;
-        public bool IsRunning => _inputHandler.IsRunning;
-        public bool IsSprinting => _inputHandler.IsSprintPressed;
-        public float CurrentSpeed => _currentSpeed;
+        [PublicAPI] public Vector3 MovementDirection { get; private set; }
+        [PublicAPI] public bool IsGrounded { get; private set; }
+        [PublicAPI] public bool IsRunning => _inputHandler.IsRunning;
+        [PublicAPI] public bool IsSprinting => _inputHandler.IsSprintPressed;
+        [PublicAPI] public float CurrentSpeed { get; private set; }
 
         private void Awake()
         {
             _characterController = GetComponent<CharacterController>();
             _inputHandler = GetComponent<PlayerInputHandler>();
 
-            // Получаем трансформ камеры (предполагается, что он будет установлен в FPSController)
-            _cameraTransform = Camera.main.transform.parent;
 
-            _currentSpeed = _walkSpeed;
+            CurrentSpeed = _walkSpeed;
         }
 
         private void OnEnable()
@@ -71,46 +67,46 @@ namespace Sim.Features.PlayerSystem.Concrete
         private void UpdateMovementSpeed()
         {
             // Обновляем скорость в зависимости от состояния спринта и бега
-            if (_isGrounded)
-            {
-                if (_inputHandler.IsSprintPressed && _inputHandler.IsRunning)
-                    _currentSpeed = _sprintSpeed;
-                else if (_inputHandler.IsRunning)
-                    _currentSpeed = _runSpeed;
-                else
-                    _currentSpeed = _walkSpeed;
-            }
+            if (!IsGrounded)
+                return;
+
+            if (_inputHandler.IsSprintPressed && _inputHandler.IsRunning)
+                CurrentSpeed = _sprintSpeed;
+            else if (_inputHandler.IsRunning)
+                CurrentSpeed = _runSpeed;
+            else
+                CurrentSpeed = _walkSpeed;
         }
 
         private void HandleMovement()
         {
-            _isGrounded = _characterController.isGrounded;
+            IsGrounded = _characterController.isGrounded;
 
-            if (_isGrounded && _verticalVelocity.y < 0)
+            if (IsGrounded && _verticalVelocity.y < 0)
             {
                 _verticalVelocity.y = -2f; // Небольшое отрицательное значение вместо нуля
             }
 
             // Получаем данные о движении от обработчика ввода
-            Vector2 moveInput = _inputHandler.MoveInput;
+            var moveInput = _inputHandler.MoveInput;
 
             // Расчет направления движения относительно ориентации камеры
-            Vector3 move = transform.right * moveInput.x + transform.forward * moveInput.y;
+            var move = transform.right * moveInput.x + transform.forward * moveInput.y;
             move = Vector3.ClampMagnitude(move,
                 1f); // Нормализация вектора для предотвращения более быстрого диагонального движения
             MovementDirection = move;
 
             // Применение уменьшения управления в воздухе
-            if (!_isGrounded)
+            if (!IsGrounded)
             {
                 move *= _airControl;
             }
 
             // Применение движения с текущей скоростью
-            _characterController.Move(move * _currentSpeed * Time.deltaTime);
+            _characterController.Move(move * CurrentSpeed * Time.deltaTime);
 
             // Обработка прыжка
-            if (_wantsToJump && _isGrounded)
+            if (_wantsToJump && IsGrounded)
             {
                 _verticalVelocity.y = Mathf.Sqrt(_jumpForce * -2f * _gravity);
                 _wantsToJump = false; // Сброс для предотвращения непрерывных прыжков
@@ -129,11 +125,13 @@ namespace Sim.Features.PlayerSystem.Concrete
         private void HandleSprintPressed()
         {
             // Логика при начале спринта может быть расширена здесь
+            Debug.Log("Sprinting");
         }
 
         private void HandleSprintReleased()
         {
             // Логика при окончании спринта может быть расширена здесь
+            Debug.Log("Sprinting Stopped");
         }
     }
 }

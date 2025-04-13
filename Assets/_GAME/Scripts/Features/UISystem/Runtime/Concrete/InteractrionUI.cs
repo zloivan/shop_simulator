@@ -2,28 +2,26 @@ using Sim.Features.InteractionSystem.Base;
 using Sim.Features.PlayerSystem.Concrete;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Sim.Features.UISystem.Runtime.Concrete
 {
     public class InteractionUI : MonoBehaviour
     {
-        [FormerlySerializedAs("crosshair")] [SerializeField] private Image _crosshair;
-        [FormerlySerializedAs("interactText")] [SerializeField] private TextMeshProUGUI _interactText;
-        [FormerlySerializedAs("playerController")] [SerializeField] private FPSControllerNew _playerController;
+        [SerializeField] private Image _crosshair;
+        [SerializeField] private TextMeshProUGUI _interactText;
+        [SerializeField] private FPSControllerNew _playerController;
 
-        [FormerlySerializedAs("defaultCrosshairColor")]
         [Header("UI Colors")]
         [SerializeField] private Color _defaultCrosshairColor = Color.white;
 
-        [FormerlySerializedAs("interactableCrosshairColor")] [SerializeField] private Color _interactableCrosshairColor = Color.green;
+        [SerializeField] private Color _interactableCrosshairColor = Color.green;
 
-        [FormerlySerializedAs("primaryInteractPrompt")]
+
         [Header("UI Prompts")]
         [SerializeField] private string _primaryInteractPrompt = "Press Right-click or Left-click to interact";
 
-        [FormerlySerializedAs("secondaryInteractPrompt")] [SerializeField] private string _secondaryInteractPrompt = "Right-click to examine";
+        [SerializeField] private string _secondaryInteractPrompt = "Right-click to examine";
 
         private void Awake()
         {
@@ -39,7 +37,7 @@ namespace Sim.Features.UISystem.Runtime.Concrete
             {
                 return;
             }
-            
+
             if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit,
                     _playerController.InteractionDistance))
             {

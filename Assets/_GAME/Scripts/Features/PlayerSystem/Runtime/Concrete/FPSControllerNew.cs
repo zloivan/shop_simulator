@@ -24,6 +24,10 @@ namespace Sim.Features.PlayerSystem.Concrete
         public Camera PlayerCamera => _interactionController.PlayerCamera;
         public float InteractionDistance => _interactionController.InteractionDistance;
 
+        public PlayerLookController LookController => _lookController;
+
+        public PlayerInputHandler InputHandler => _inputHandler;
+
         private void Awake()
         {
             // Получаем компоненты

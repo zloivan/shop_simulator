@@ -23,53 +23,54 @@ namespace Sim.Features.PlayerSystem.Concrete
         public bool IsSprintPressed { get; private set; }
         public bool IsRunning => MoveInput.magnitude > 0.1f;
 
-        private PlayerControls _playerControls;
+        //New inout system, generated class
+        private PlayerInputData _playerInputData;
 
         private void Awake()
         {
-            _playerControls = new PlayerControls();
+            _playerInputData = new PlayerInputData();
         }
 
         private void OnEnable()
         {
-            _playerControls.Enable();
+            _playerInputData.Enable();
 
             // Настройка обработчиков событий ввода
-            _playerControls.Player.Move.performed += OnMoveInput;
-            _playerControls.Player.Move.canceled += OnMoveInput;
+            _playerInputData.Player.Move.performed += OnMoveInput;
+            _playerInputData.Player.Move.canceled += OnMoveInput;
 
-            _playerControls.Player.Look.performed += OnLookInput;
-            _playerControls.Player.Look.canceled += OnLookInput;
+            _playerInputData.Player.Look.performed += OnLookInput;
+            _playerInputData.Player.Look.canceled += OnLookInput;
 
-            _playerControls.Player.Jump.performed += OnJumpPerformed;
-            _playerControls.Player.Jump.canceled += OnJumpCanceled;
+            _playerInputData.Player.Jump.performed += OnJumpPerformed;
+            _playerInputData.Player.Jump.canceled += OnJumpCanceled;
 
-            _playerControls.Player.InteractPrimary.performed += OnInteractPrimaryPerformed;
-            _playerControls.Player.InteractSecondary.performed += OnInteractSecondaryPerformed;
+            _playerInputData.Player.InteractPrimary.performed += OnInteractPrimaryPerformed;
+            _playerInputData.Player.InteractSecondary.performed += OnInteractSecondaryPerformed;
 
-            _playerControls.Player.Sprint.performed += OnSprintPerformed;
-            _playerControls.Player.Sprint.canceled += OnSprintCanceled;
+            _playerInputData.Player.Sprint.performed += OnSprintPerformed;
+            _playerInputData.Player.Sprint.canceled += OnSprintCanceled;
         }
 
         private void OnDisable()
         {
-            _playerControls.Disable();
+            _playerInputData.Disable();
 
             // Удаление обработчиков событий ввода
-            _playerControls.Player.Move.performed -= OnMoveInput;
-            _playerControls.Player.Move.canceled -= OnMoveInput;
+            _playerInputData.Player.Move.performed -= OnMoveInput;
+            _playerInputData.Player.Move.canceled -= OnMoveInput;
 
-            _playerControls.Player.Look.performed -= OnLookInput;
-            _playerControls.Player.Look.canceled -= OnLookInput;
+            _playerInputData.Player.Look.performed -= OnLookInput;
+            _playerInputData.Player.Look.canceled -= OnLookInput;
 
-            _playerControls.Player.Jump.performed -= OnJumpPerformed;
-            _playerControls.Player.Jump.canceled -= OnJumpCanceled;
+            _playerInputData.Player.Jump.performed -= OnJumpPerformed;
+            _playerInputData.Player.Jump.canceled -= OnJumpCanceled;
 
-            _playerControls.Player.InteractPrimary.performed -= OnInteractPrimaryPerformed;
-            _playerControls.Player.InteractSecondary.performed -= OnInteractSecondaryPerformed;
+            _playerInputData.Player.InteractPrimary.performed -= OnInteractPrimaryPerformed;
+            _playerInputData.Player.InteractSecondary.performed -= OnInteractSecondaryPerformed;
 
-            _playerControls.Player.Sprint.performed -= OnSprintPerformed;
-            _playerControls.Player.Sprint.canceled -= OnSprintCanceled;
+            _playerInputData.Player.Sprint.performed -= OnSprintPerformed;
+            _playerInputData.Player.Sprint.canceled -= OnSprintCanceled;
         }
 
         private void OnMoveInput(InputAction.CallbackContext context)
