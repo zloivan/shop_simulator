@@ -70,7 +70,7 @@ namespace Sim.Features.PlayerSystem.Concrete
             {
                 if (hit.collider.TryGetComponent<IInteractable>(out var interactable))
                 {
-                    interactable.InteractPrimary(GetComponentInParent<FPSControllerNew>());
+                    interactable.InteractPrimary(GetComponentInParent<PlayerFacade>());
                     Debug.Log("Первичное взаимодействие с: " + hit.collider.gameObject.name);
                 }
             }
@@ -83,7 +83,7 @@ namespace Sim.Features.PlayerSystem.Concrete
             {
                 if (hit.collider.TryGetComponent<IInteractable>(out var interactable))
                 {
-                    interactable.InteractSecondary(GetComponentInParent<FPSControllerNew>());
+                    interactable.InteractSecondary(GetComponentInParent<PlayerFacade>());
                     Debug.Log("Вторичное взаимодействие с: " + hit.collider.gameObject.name);
                 }
             }

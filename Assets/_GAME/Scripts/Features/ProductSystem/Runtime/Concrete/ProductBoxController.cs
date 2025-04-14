@@ -53,7 +53,7 @@ namespace Sim.Features.ProductSystem.Concrete
             }
         }
 
-        public void InteractPrimary(FPSControllerNew player)
+        public void InteractPrimary(PlayerFacade player)
         {
             var playerInventory = player.GetComponent<PlayerInventoryComponent>();
 
@@ -99,7 +99,7 @@ namespace Sim.Features.ProductSystem.Concrete
             UpdateBoxVisual();
         }
 
-        public void InteractSecondary(FPSControllerNew player)
+        public void InteractSecondary(PlayerFacade player)
         {
             if (_productFactory == null)
             {

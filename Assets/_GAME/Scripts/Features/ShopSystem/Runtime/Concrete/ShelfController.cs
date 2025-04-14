@@ -78,7 +78,7 @@ namespace Sim.Features.ShopSystem.Runtime.Concrete
             _shelfRenderer.material.color = shelfColor;
         }
 
-        public void InteractPrimary(FPSControllerNew player)
+        public void InteractPrimary(PlayerFacade player)
         {
             // Логика взятия товара с полки
             if (_shelf.Products.Count <= 0) 
@@ -96,7 +96,7 @@ namespace Sim.Features.ShopSystem.Runtime.Concrete
             _shelf.RemoveProduct(product.Id);
         }
 
-        public void InteractSecondary(FPSControllerNew player)
+        public void InteractSecondary(PlayerFacade player)
         {
             // Получаем компонент инвентаря игрока
             var playerInventoryComponent = player.GetComponent<PlayerInventoryComponent>();

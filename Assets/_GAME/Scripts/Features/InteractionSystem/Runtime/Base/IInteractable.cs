@@ -4,7 +4,7 @@ namespace Sim.Features.InteractionSystem.Base
 {
      public interface IInteractable
     {
-        void InteractPrimary(FPSControllerNew player);
-        void InteractSecondary(FPSControllerNew player);
+        void InteractPrimary(PlayerFacade player);
+        void InteractSecondary(PlayerFacade player);
     }
 }

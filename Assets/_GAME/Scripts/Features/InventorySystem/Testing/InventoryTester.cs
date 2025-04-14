@@ -17,7 +17,7 @@ namespace Sim.Features.InventorySystem.Testing
             name = _itemName + " " + _itemId + $" {_itemWeight}" + " (InventoryTester)";
         }
 
-        public void InteractPrimary(FPSControllerNew player)
+        public void InteractPrimary(PlayerFacade player)
         {
             Debug.Log($"Попытка добавить предмет {_itemName} в инвентарь");
 
@@ -50,7 +50,7 @@ namespace Sim.Features.InventorySystem.Testing
             }
         }
 
-        public void InteractSecondary(FPSControllerNew player)
+        public void InteractSecondary(PlayerFacade player)
         {
             Debug.Log($"Осмотр предмета: {_itemName}, вес: {_itemWeight}");
         }

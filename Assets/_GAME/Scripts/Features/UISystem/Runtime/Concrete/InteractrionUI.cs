@@ -10,7 +10,7 @@ namespace Sim.Features.UISystem.Runtime.Concrete
     {
         [SerializeField] private Image _crosshair;
         [SerializeField] private TextMeshProUGUI _interactText;
-        [SerializeField] private FPSControllerNew _playerController;
+        [SerializeField] private PlayerFacade _playerController;
 
         [Header("UI Colors")]
         [SerializeField] private Color _defaultCrosshairColor = Color.white;
@@ -27,7 +27,7 @@ namespace Sim.Features.UISystem.Runtime.Concrete
         {
             if (_playerController == null)
             {
-                _playerController = FindObjectOfType<FPSControllerNew>();
+                _playerController = FindObjectOfType<PlayerFacade>();
             }
         }
 

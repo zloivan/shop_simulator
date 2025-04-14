@@ -8,7 +8,7 @@ namespace Sim.Features.PlayerSystem.Concrete
     [RequireComponent(typeof(PlayerMovementController))]
     [RequireComponent(typeof(PlayerLookController))]
     [RequireComponent(typeof(PlayerInteractionController))]
-    public class FPSControllerNew : MonoBehaviour, IInteractor
+    public class PlayerFacade : MonoBehaviour, IInteractor
     {
         [Header("Ссылки на компоненты")]
         [SerializeField] private Transform _cameraHolder;
