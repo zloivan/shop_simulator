@@ -1,12 +1,13 @@
 using System;
+using Sim.Features.PlayerSystem.Base;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Sim.Features.PlayerSystem.Concrete
 {
-    public class PlayerInputHandler : MonoBehaviour
+    public class PlayerInputHandler : MonoBehaviour, IPlayerComponent
     {
-        // Событийная система для передачи ввода другим компонентам
+        // Событийная система для передачи ввода через фасад
         public event Action<Vector2> OnMoveInputChanged;
         public event Action<Vector2> OnLookInputChanged;
         public event Action OnJumpPressed;
@@ -16,15 +17,20 @@ namespace Sim.Features.PlayerSystem.Concrete
         public event Action OnSprintPressed;
         public event Action OnSprintReleased;
 
-        // Свойства для прямого получения значений ввода
+        // Свойства для доступа к значениям ввода через фасад
         public Vector2 MoveInput { get; private set; }
         public Vector2 LookInput { get; private set; }
         public bool IsJumpPressed { get; private set; }
         public bool IsSprintPressed { get; private set; }
         public bool IsRunning => MoveInput.magnitude > 0.1f;
 
-        //New inout system, generated class
+        // Ссылка на фасад
+        private PlayerFacade _facade;
+
+        // Система ввода Unity
         private PlayerInputData _playerInputData;
+
+        #region Unity Lifecycle
 
         private void Awake()
         {
@@ -34,7 +40,30 @@ namespace Sim.Features.PlayerSystem.Concrete
         private void OnEnable()
         {
             _playerInputData.Enable();
+            SetupInputHandlers();
+        }
 
+        private void OnDisable()
+        {
+            _playerInputData.Disable();
+            RemoveInputHandlers();
+        }
+
+        #endregion
+
+        #region IPlayerComponent Implementation
+
+        public void Initialize(PlayerFacade facade)
+        {
+            _facade = facade;
+        }
+
+        #endregion
+
+        #region Input Setup
+
+        private void SetupInputHandlers()
+        {
             // Настройка обработчиков событий ввода
             _playerInputData.Player.Move.performed += OnMoveInput;
             _playerInputData.Player.Move.canceled += OnMoveInput;
@@ -52,10 +81,8 @@ namespace Sim.Features.PlayerSystem.Concrete
             _playerInputData.Player.Sprint.canceled += OnSprintCanceled;
         }
 
-        private void OnDisable()
+        private void RemoveInputHandlers()
         {
-            _playerInputData.Disable();
-
             // Удаление обработчиков событий ввода
             _playerInputData.Player.Move.performed -= OnMoveInput;
             _playerInputData.Player.Move.canceled -= OnMoveInput;
@@ -72,6 +99,10 @@ namespace Sim.Features.PlayerSystem.Concrete
             _playerInputData.Player.Sprint.performed -= OnSprintPerformed;
             _playerInputData.Player.Sprint.canceled -= OnSprintCanceled;
         }
+
+        #endregion
+
+        #region Input Handlers
 
         private void OnMoveInput(InputAction.CallbackContext context)
         {
@@ -118,5 +149,7 @@ namespace Sim.Features.PlayerSystem.Concrete
             IsSprintPressed = false;
             OnSprintReleased?.Invoke();
         }
+
+        #endregion
     }
 }

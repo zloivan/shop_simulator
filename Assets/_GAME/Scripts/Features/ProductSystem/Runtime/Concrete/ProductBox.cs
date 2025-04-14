@@ -8,42 +8,42 @@ using UnityEngine;
 namespace Sim.Features.ProductSystem.Concrete
 {
     /// <summary>
-    /// Сериализуемая обертка для продукта
-    /// </summary>
-    [Serializable]
-    public class SerializableProductWrapper
-    {
-        [SerializeField] private string _productId;
-        [SerializeField] private string _productName;
-        [SerializeField] private float _price;
-        [SerializeField] private float _weight;
-
-        public SerializableProductWrapper(IProduct product)
-        {
-            _productId = product.Id;
-            _productName = product.Name;
-            _price = product.Price;
-            _weight = product.Weight;
-        }
-
-        public IProduct ToProduct(ProductFactory productFactory)
-        {
-            // Воссоздаем продукт через фабрику
-            return productFactory.CreateProductById(_productId);
-        }
-    }
-
-    /// <summary>
     /// Сериализуемая реализация коробки с товарами
     /// </summary>
     [Serializable]
     public class ProductBox : IProductBox
     {
+        /// <summary>
+        /// Сериализуемая обертка для продукта
+        /// </summary>
+        [Serializable]
+        public class ProductBase
+        {
+            [SerializeField] private string _productId;
+            [SerializeField] private string _productName;
+            [SerializeField] private float _price;
+            [SerializeField] private float _weight;
+
+            public ProductBase(IProduct product)
+            {
+                _productId = product.Id;
+                _productName = product.Name;
+                _price = product.Price;
+                _weight = product.Weight;
+            }
+
+            public IProduct ToProduct(ProductFactory productFactory)
+            {
+                // Воссоздаем продукт через фабрику
+                return productFactory.CreateProductById(_productId);
+            }
+        }
+        
         [SerializeField] private string _id;
         [SerializeField] private int _capacity = 6;
 
         // Сериализуемый список обверток продуктов
-        [SerializeField] private List<SerializableProductWrapper> _serializedProducts;
+        [SerializeField] private List<ProductBase> _serializedProducts;
 
         // Транзиентное поле для кэширования продуктов
         [NonSerialized]
@@ -73,7 +73,7 @@ namespace Sim.Features.ProductSystem.Concrete
                 ? Guid.NewGuid().ToString().Substring(0, 8)
                 : id;
             _capacity = capacity;
-            _serializedProducts = new List<SerializableProductWrapper>();
+            _serializedProducts = new List<ProductBase>();
         }
 
         // Метод для установки фабрики продуктов (вызывается извне)
@@ -127,7 +127,7 @@ namespace Sim.Features.ProductSystem.Concrete
                 return false;
 
             // Добавляем в сериализуемый список и кэш
-            _serializedProducts.Add(new SerializableProductWrapper(product));
+            _serializedProducts.Add(new ProductBase(product));
 
             if (_cachedProducts == null)
                 _cachedProducts = new List<IProduct>();

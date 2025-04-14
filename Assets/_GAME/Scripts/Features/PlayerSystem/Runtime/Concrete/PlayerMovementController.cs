@@ -1,61 +1,55 @@
 using JetBrains.Annotations;
+using Sim.Features.PlayerSystem.Base;
 using UnityEngine;
 
 namespace Sim.Features.PlayerSystem.Concrete
 {
     [RequireComponent(typeof(CharacterController))]
-    [RequireComponent(typeof(PlayerInputHandler))]
-    public class PlayerMovementController : MonoBehaviour
+    public class PlayerMovementController : MonoBehaviour, IPlayerComponent
     {
         [Header("Настройки скорости")]
         [SerializeField] private float _walkSpeed = 5f;
-
         [SerializeField] private float _runSpeed = 7f;
         [SerializeField] private float _sprintSpeed = 10f;
 
         [Header("Настройки физики")]
         [SerializeField] private float _jumpForce = 5f;
-
         [SerializeField] private float _gravity = -19.62f;
         [SerializeField] private float _airControl = 0.5f;
 
         private CharacterController _characterController;
-        private PlayerInputHandler _inputHandler;
+        private PlayerFacade _facade;
 
         // Состояние движения
         private Vector3 _verticalVelocity;
         private bool _wantsToJump;
 
-        // Публичные свойства для внешнего доступа
+        // Публичные свойства для доступа через фасад
         [PublicAPI] public Vector3 MovementDirection { get; private set; }
         [PublicAPI] public bool IsGrounded { get; private set; }
-        [PublicAPI] public bool IsRunning => _inputHandler.IsRunning;
-        [PublicAPI] public bool IsSprinting => _inputHandler.IsSprintPressed;
+        [PublicAPI] public bool IsRunning => _facade.IsRunning;
+        [PublicAPI] public bool IsSprinting => _facade.IsSprintPressed;
         [PublicAPI] public float CurrentSpeed { get; private set; }
+
+        #region Unity Lifecycle
 
         private void Awake()
         {
             _characterController = GetComponent<CharacterController>();
-            _inputHandler = GetComponent<PlayerInputHandler>();
-
-
             CurrentSpeed = _walkSpeed;
         }
 
         private void OnEnable()
         {
-            // Подписка на события ввода
-            _inputHandler.OnJumpPressed += HandleJumpPressed;
-            _inputHandler.OnSprintPressed += HandleSprintPressed;
-            _inputHandler.OnSprintReleased += HandleSprintReleased;
+            if (_facade != null)
+            {
+                SubscribeToEvents();
+            }
         }
 
         private void OnDisable()
         {
-            // Отписка от событий ввода
-            _inputHandler.OnJumpPressed -= HandleJumpPressed;
-            _inputHandler.OnSprintPressed -= HandleSprintPressed;
-            _inputHandler.OnSprintReleased -= HandleSprintReleased;
+            UnsubscribeFromEvents();
         }
 
         private void Update()
@@ -64,15 +58,50 @@ namespace Sim.Features.PlayerSystem.Concrete
             HandleMovement();
         }
 
+        #endregion
+
+        #region IPlayerComponent Implementation
+
+        public void Initialize(PlayerFacade facade)
+        {
+            _facade = facade;
+            SubscribeToEvents();
+        }
+
+        #endregion
+
+        #region Event Subscriptions
+
+        private void SubscribeToEvents()
+        {
+            // Подписываемся на события фасада вместо прямого обращения к другим компонентам
+            _facade.OnJumpPressed += HandleJumpPressed;
+            _facade.OnSprintPressed += HandleSprintPressed;
+            _facade.OnSprintReleased += HandleSprintReleased;
+        }
+
+        private void UnsubscribeFromEvents()
+        {
+            if (_facade == null) return;
+
+            _facade.OnJumpPressed -= HandleJumpPressed;
+            _facade.OnSprintPressed -= HandleSprintPressed;
+            _facade.OnSprintReleased -= HandleSprintReleased;
+        }
+
+        #endregion
+
+        #region Movement Logic
+
         private void UpdateMovementSpeed()
         {
             // Обновляем скорость в зависимости от состояния спринта и бега
             if (!IsGrounded)
                 return;
 
-            if (_inputHandler.IsSprintPressed && _inputHandler.IsRunning)
+            if (IsSprinting && IsRunning)
                 CurrentSpeed = _sprintSpeed;
-            else if (_inputHandler.IsRunning)
+            else if (IsRunning)
                 CurrentSpeed = _runSpeed;
             else
                 CurrentSpeed = _walkSpeed;
@@ -87,13 +116,12 @@ namespace Sim.Features.PlayerSystem.Concrete
                 _verticalVelocity.y = -2f; // Небольшое отрицательное значение вместо нуля
             }
 
-            // Получаем данные о движении от обработчика ввода
-            var moveInput = _inputHandler.MoveInput;
+            // Получаем данные о движении через фасад
+            var moveInput = _facade.MoveInput;
 
             // Расчет направления движения относительно ориентации камеры
             var move = transform.right * moveInput.x + transform.forward * moveInput.y;
-            move = Vector3.ClampMagnitude(move,
-                1f); // Нормализация вектора для предотвращения более быстрого диагонального движения
+            move = Vector3.ClampMagnitude(move, 1f); // Нормализация вектора для предотвращения более быстрого диагонального движения
             MovementDirection = move;
 
             // Применение уменьшения управления в воздухе
@@ -117,6 +145,10 @@ namespace Sim.Features.PlayerSystem.Concrete
             _characterController.Move(_verticalVelocity * Time.deltaTime);
         }
 
+        #endregion
+
+        #region Input Handlers
+
         private void HandleJumpPressed()
         {
             _wantsToJump = true;
@@ -124,14 +156,16 @@ namespace Sim.Features.PlayerSystem.Concrete
 
         private void HandleSprintPressed()
         {
-            // Логика при начале спринта может быть расширена здесь
-            Debug.Log("Sprinting");
+            // Логика при начале спринта
+            Debug.Log("Sprinting started");
         }
 
         private void HandleSprintReleased()
         {
-            // Логика при окончании спринта может быть расширена здесь
-            Debug.Log("Sprinting Stopped");
+            // Логика при окончании спринта
+            Debug.Log("Sprinting stopped");
         }
+
+        #endregion
     }
 }

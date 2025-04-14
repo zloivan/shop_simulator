@@ -21,11 +21,6 @@ namespace Sim.Features.ProductSystem.Concrete
         [SerializeField] private Color _filledBoxColor = Color.green;
         [SerializeField] private Color _fullColor = Color.red;
 
-        // private void Awake()
-        // {
-        //     _productFactory = FindObjectOfType<ProductFactory>();
-        // }
-
         private void Start()
         {
             // Инициализация коробки, если не установлена

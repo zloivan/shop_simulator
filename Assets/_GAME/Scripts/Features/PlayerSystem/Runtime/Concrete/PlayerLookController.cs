@@ -1,9 +1,9 @@
+using Sim.Features.PlayerSystem.Base;
 using UnityEngine;
 
 namespace Sim.Features.PlayerSystem.Concrete
 {
-    [RequireComponent(typeof(PlayerInputHandler))]
-    public class PlayerLookController : MonoBehaviour
+    public class PlayerLookController : MonoBehaviour, IPlayerComponent
     {
         [Header("Настройки камеры")]
         [SerializeField] private Transform _cameraHolder;
@@ -11,17 +11,17 @@ namespace Sim.Features.PlayerSystem.Concrete
         [SerializeField] private float _lookSmoothing = 0.1f;
         [SerializeField] private float _lookXLimit = 80f;
 
-        private PlayerInputHandler _inputHandler;
+        private PlayerFacade _facade;
         private float _rotationX = 0f;
 
         // Значения для сглаживания
         private Vector2 _smoothLookInput;
         private Vector2 _lookInputVelocity;
 
+        #region Unity Lifecycle
+
         private void Awake()
         {
-            _inputHandler = GetComponent<PlayerInputHandler>();
-
             if (_cameraHolder == null)
             {
                 Debug.LogError("Camera holder is not assigned in PlayerLookController!");
@@ -34,18 +34,52 @@ namespace Sim.Features.PlayerSystem.Concrete
 
         private void OnEnable()
         {
-            _inputHandler.OnLookInputChanged += HandleLookInput;
+            if (_facade != null)
+            {
+                SubscribeToEvents();
+            }
         }
 
         private void OnDisable()
         {
-            _inputHandler.OnLookInputChanged -= HandleLookInput;
+            UnsubscribeFromEvents();
         }
 
         private void Update()
         {
             UpdateLook();
         }
+
+        #endregion
+
+        #region IPlayerComponent Implementation
+
+        public void Initialize(PlayerFacade facade)
+        {
+            _facade = facade;
+            SubscribeToEvents();
+        }
+
+        #endregion
+
+        #region Event Subscriptions
+
+        private void SubscribeToEvents()
+        {
+            // Подписываемся на события фасада вместо прямого обращения к другим компонентам
+            _facade.OnLookInputChanged += HandleLookInput;
+        }
+
+        private void UnsubscribeFromEvents()
+        {
+            if (_facade == null) return;
+
+            _facade.OnLookInputChanged -= HandleLookInput;
+        }
+
+        #endregion
+
+        #region Look Logic
 
         private void HandleLookInput(Vector2 lookInput)
         {
@@ -58,7 +92,7 @@ namespace Sim.Features.PlayerSystem.Concrete
             // Применяем сглаживание к вводу взгляда
             _smoothLookInput = Vector2.SmoothDamp(
                 _smoothLookInput,
-                _inputHandler.LookInput,
+                _facade.LookInput,
                 ref _lookInputVelocity,
                 _lookSmoothing
             );
@@ -76,10 +110,16 @@ namespace Sim.Features.PlayerSystem.Concrete
             transform.rotation *= Quaternion.Euler(0f, mouseX, 0f);
         }
 
+        #endregion
+
+        #region Public Methods
+
         // Метод для внешнего доступа к текущему углу обзора по вертикали
         public float GetVerticalAngle()
         {
             return _rotationX;
         }
+
+        #endregion
     }
 }

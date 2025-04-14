@@ -1,34 +1,31 @@
 using Sim.Features.InteractionSystem.Base;
+using Sim.Features.PlayerSystem.Base;
 using UnityEngine;
 
 namespace Sim.Features.PlayerSystem.Concrete
 {
-    [RequireComponent(typeof(PlayerInputHandler))]
-    public class PlayerInteractionController : MonoBehaviour, IInteractor
+    public class PlayerInteractionController : MonoBehaviour, IPlayerComponent
     {
         [Header("Настройки взаимодействия")]
         [SerializeField] private float _interactionDistance = 2.5f;
-
         [SerializeField] private LayerMask _interactionLayer = ~0; // Всё по умолчанию
         [SerializeField] private Transform _interactionRayOrigin;
 
         [Header("Отладка")]
         [SerializeField] private bool _showInteractionRays = true;
-
         [SerializeField] private Color _primaryRayColor = Color.blue;
         [SerializeField] private Color _secondaryRayColor = Color.red;
 
-        private PlayerInputHandler _inputHandler;
+        private PlayerFacade _facade;
         private Camera _playerCamera;
 
-        // Реализация интерфейса IInteractor
-        public Transform Transform => transform;
-        public Camera PlayerCamera => _playerCamera;
+        // Публичные свойства для доступа через фасад
         public float InteractionDistance => _interactionDistance;
+
+        #region Unity Lifecycle
 
         private void Awake()
         {
-            _inputHandler = GetComponent<PlayerInputHandler>();
             _playerCamera = GetComponentInChildren<Camera>();
 
             if (_interactionRayOrigin == null)
@@ -39,17 +36,49 @@ namespace Sim.Features.PlayerSystem.Concrete
 
         private void OnEnable()
         {
-            // Подписка на события взаимодействия
-            _inputHandler.OnInteractPrimaryPressed += HandleInteractPrimary;
-            _inputHandler.OnInteractSecondaryPressed += HandleInteractSecondary;
+            if (_facade != null)
+            {
+                SubscribeToEvents();
+            }
         }
 
         private void OnDisable()
         {
-            // Отписка от событий взаимодействия
-            _inputHandler.OnInteractPrimaryPressed -= HandleInteractPrimary;
-            _inputHandler.OnInteractSecondaryPressed -= HandleInteractSecondary;
+            UnsubscribeFromEvents();
         }
+
+        #endregion
+
+        #region IPlayerComponent Implementation
+
+        public void Initialize(PlayerFacade facade)
+        {
+            _facade = facade;
+            SubscribeToEvents();
+        }
+
+        #endregion
+
+        #region Event Subscriptions
+
+        private void SubscribeToEvents()
+        {
+            // Подписываемся на события фасада вместо прямого обращения к другим компонентам
+            _facade.OnInteractPrimaryPressed += HandleInteractPrimary;
+            _facade.OnInteractSecondaryPressed += HandleInteractSecondary;
+        }
+
+        private void UnsubscribeFromEvents()
+        {
+            if (_facade == null) return;
+
+            _facade.OnInteractPrimaryPressed -= HandleInteractPrimary;
+            _facade.OnInteractSecondaryPressed -= HandleInteractSecondary;
+        }
+
+        #endregion
+
+        #region Interaction Logic
 
         private void HandleInteractPrimary()
         {
@@ -63,31 +92,39 @@ namespace Sim.Features.PlayerSystem.Concrete
             TryInteractSecondary();
         }
 
-        private void TryInteractPrimary()
+        // Публично доступный метод для использования через фасад
+        public void TryInteractPrimary()
         {
             if (Physics.Raycast(_interactionRayOrigin.position, _interactionRayOrigin.forward, out RaycastHit hit,
                     _interactionDistance, _interactionLayer))
             {
                 if (hit.collider.TryGetComponent<IInteractable>(out var interactable))
                 {
-                    interactable.InteractPrimary(GetComponentInParent<PlayerFacade>());
+                    // Взаимодействуем через фасад
+                    interactable.InteractPrimary(_facade);
                     Debug.Log("Первичное взаимодействие с: " + hit.collider.gameObject.name);
                 }
             }
         }
 
-        private void TryInteractSecondary()
+        // Публично доступный метод для использования через фасад
+        public void TryInteractSecondary()
         {
             if (Physics.Raycast(_interactionRayOrigin.position, _interactionRayOrigin.forward, out RaycastHit hit,
                     _interactionDistance, _interactionLayer))
             {
                 if (hit.collider.TryGetComponent<IInteractable>(out var interactable))
                 {
-                    interactable.InteractSecondary(GetComponentInParent<PlayerFacade>());
+                    // Взаимодействуем через фасад
+                    interactable.InteractSecondary(_facade);
                     Debug.Log("Вторичное взаимодействие с: " + hit.collider.gameObject.name);
                 }
             }
         }
+
+        #endregion
+
+        #region Gizmos
 
         private void OnDrawGizmos()
         {
@@ -101,5 +138,7 @@ namespace Sim.Features.PlayerSystem.Concrete
             Gizmos.color = _secondaryRayColor;
             Gizmos.DrawRay(_interactionRayOrigin.position, _interactionRayOrigin.forward * _interactionDistance);
         }
+
+        #endregion
     }
 }
