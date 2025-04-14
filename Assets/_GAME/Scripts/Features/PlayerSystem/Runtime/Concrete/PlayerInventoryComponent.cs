@@ -1,5 +1,4 @@
 using IKhom.EventBusSystem.Runtime;
-using Sim.Features.InventorySystem.Base;
 using Sim.Features.InventorySystem.Concrete;
 using UnityEngine;
 
@@ -10,15 +9,14 @@ namespace Sim.Features.PlayerSystem.Concrete
         [SerializeField] private float _maxInventoryWeight = 10f;
         [SerializeField] private int _inventoryCapacity = 20;
 
-        private IInventory _inventory;
         private EventBinding<ItemAddedEvent> _itemAddedBinding;
         private EventBinding<ItemRemovedEvent> _itemRemovedBinding;
 
-        public IInventory Inventory => _inventory;
+        public Inventory Inventory { get; private set; }
 
         private void Awake()
         {
-            _inventory = new Inventory("player_inventory", _maxInventoryWeight, _inventoryCapacity);
+            Inventory = new Inventory("player_inventory", _maxInventoryWeight, _inventoryCapacity);
         }
 
         private void OnEnable()
@@ -58,7 +56,7 @@ namespace Sim.Features.PlayerSystem.Concrete
         private void PrintInventoryStatus()
         {
             Debug.Log(
-                $"Инвентарь: {_inventory.Items.Count}/{_inventory.Capacity} предметов, {_inventory.CurrentWeight}/{_inventory.MaxWeight} вес");
+                $"Инвентарь: {Inventory.Items.Count}/{Inventory.Capacity} предметов, {Inventory.CurrentWeight}/{Inventory.MaxWeight} вес");
         }
     }
 }

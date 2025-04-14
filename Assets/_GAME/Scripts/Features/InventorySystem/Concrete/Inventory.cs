@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using IKhom.EventBusSystem.Runtime;
@@ -20,6 +21,7 @@ namespace Sim.Features.InventorySystem.Concrete
         public string InventoryId;
     }
 
+    [Serializable]
     public class Inventory : IInventory
     {
         private readonly List<IInventoryItem> _items = new();
