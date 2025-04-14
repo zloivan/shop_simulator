@@ -1,4 +1,3 @@
-using System;
 using Sim.Features.InteractionSystem.Base;
 using Sim.Features.InventorySystem.Concrete;
 using Sim.Features.PlayerSystem.Concrete;
@@ -15,33 +14,33 @@ namespace Sim.Features.InventorySystem.Testing
 
         private void OnValidate()
         {
-            name = _itemName + " " + _itemId + $" {_itemWeight}"+ " (InventoryTester)";
+            name = _itemName + " " + _itemId + $" {_itemWeight}" + " (InventoryTester)";
         }
 
         public void InteractPrimary(FPSControllerNew player)
         {
             Debug.Log($"Попытка добавить предмет {_itemName} в инвентарь");
-            
+
             // Получаем компонент инвентаря игрока
             var playerInventory = player.GetComponent<PlayerInventoryComponent>();
-            
+
             if (playerInventory == null)
             {
                 Debug.LogError("У игрока нет компонента инвентаря!");
                 return;
             }
-            
+
             // Создаем тестовый предмет
             var itemData = InventoryItemData.Create(_itemId, _itemName, _itemWeight, _itemIcon);
             var item = new InventoryItem(itemData);
-            
+
             // Добавляем в инвентарь
             bool added = playerInventory.Inventory.AddItem(item);
-            
+
             if (added)
             {
                 Debug.Log($"Предмет {_itemName} успешно добавлен в инвентарь");
-                
+
                 // Опционально деактивируем объект
                 gameObject.SetActive(false);
             }
@@ -50,7 +49,7 @@ namespace Sim.Features.InventorySystem.Testing
                 Debug.LogWarning($"Не удалось добавить предмет {_itemName} в инвентарь");
             }
         }
-        
+
         public void InteractSecondary(FPSControllerNew player)
         {
             Debug.Log($"Осмотр предмета: {_itemName}, вес: {_itemWeight}");

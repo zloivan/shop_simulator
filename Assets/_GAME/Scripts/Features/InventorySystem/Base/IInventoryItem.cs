@@ -7,7 +7,5 @@ namespace Sim.Features.InventorySystem.Base
         string Id { get; }
         string Name { get; }
         float Weight { get; }
-        
-        
     }
 }

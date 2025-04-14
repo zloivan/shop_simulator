@@ -1,6 +1,7 @@
 using IKhom.EventBusSystem.Runtime;
 using Sim.Features.InteractionSystem.Base;
 using Sim.Features.InventorySystem.Concrete;
+using Sim.Features.InventorySystem.Extensions;
 using Sim.Features.PlayerSystem.Concrete;
 using Sim.Features.ProductSystem.Concrete;
 using Sim.Features.ProductSystem.Data;
@@ -89,19 +90,10 @@ namespace Sim.Features.ShopSystem.Runtime.Concrete
             if (playerInventory == null) 
                 return;
             
-            var inventoryItem = InventoryItemData.Create(
-                product.Id,
-                product.Name,
-                product.Weight,
-                product.Icon
-            );
-
-            if (!playerInventory.Inventory.AddItem(new InventoryItem(inventoryItem))) 
+            if (!playerInventory.Inventory.AddItem(product.ToInvetoryItem())) 
                 return;
             
             _shelf.RemoveProduct(product.Id);
-
-            
         }
 
         public void InteractSecondary(FPSControllerNew player)
@@ -118,25 +110,17 @@ namespace Sim.Features.ShopSystem.Runtime.Concrete
             var inventory = playerInventoryComponent.Inventory;
 
             // Если в инвентаре есть предметы и на полке есть место
-            if (inventory.Items.Count > 0 && _shelf.CurrentCount < _shelf.Capacity)
+            if (inventory.Items.Count <= 0 || _shelf.CurrentCount >= _shelf.Capacity) 
+                return;
+            
+            // Берем первый предмет из инвентаря
+            var inventoryItem = inventory.Items[0];
+
+            // Пытаемся добавить на полку
+            if (_shelf.AddProduct(inventoryItem.ToProduct()))
             {
-                // Берем первый предмет из инвентаря
-                var inventoryItem = inventory.Items[0];
-
-                // Создаем продукт на основе предмета инвентаря
-                var product = new Product(ProductData.Create(
-                    inventoryItem.Id, 
-                    inventoryItem.Name, 
-                    0, // базовая цена 0, так как это копия из инвентаря
-                    inventoryItem.Weight
-                ));
-
-                // Пытаемся добавить на полку
-                if (_shelf.AddProduct(product))
-                {
-                    // Если удалось добавить, удаляем из инвентаря
-                    inventory.RemoveItem(inventoryItem.Id);
-                }
+                // Если удалось добавить, удаляем из инвентаря
+                inventory.RemoveItem(inventoryItem.Id);
             }
         }
     }
