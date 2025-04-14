@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _id: ea083a30
   _name: "\u041D\u043E\u0432\u044B\u0439 \u0442\u043E\u0432\u0430\u0440"
-  _basePrice: 0.48
-  _weight: 0.55
+  _basePrice: 0.59
+  _weight: 1.5
   _icon: {fileID: 0}
   _description: 
   _category: Default

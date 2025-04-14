@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Bear
   m_EditorClassIdentifier: 
   _id: 6b7bd665
-  _name: "\u041D\u043E\u0432\u044B\u0439 \u0442\u043E\u0432\u0430\u0440"
-  _basePrice: -1.29
-  _weight: -0.64
+  _name: Bread
+  _basePrice: 0.99
+  _weight: 1.5
   _icon: {fileID: 0}
   _description: 
   _category: Default
