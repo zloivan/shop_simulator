@@ -1,5 +1,3 @@
-using UnityEngine.InputSystem;
-
 namespace Sim.Features.InteractionSystem.Base
 {
     public enum InteractionType

@@ -1,8 +1,6 @@
-using System;
 using Sim.Features.InteractionSystem.Base;
 using Sim.Features.PlayerSystem.Base;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Sim.Features.PlayerSystem.PlayerConponents
 {
@@ -22,7 +20,9 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
 
         private PlayerFacade _facade;
         private Camera _playerCamera;
+
         private InteractableBase _interactableBase;
+
         // Публичные свойства для доступа через фасад
         public float InteractionDistance => _interactionDistance;
 
@@ -85,17 +85,16 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
         }
 
         // Публично доступный метод для использования через фасад
-        public bool TryInteract(InteractionType interactionType)
+        private bool TryInteract(InteractionType interactionType)
         {
             if (!Physics.Raycast(_interactionRayOrigin.position, _interactionRayOrigin.forward, out var hit,
                     _interactionDistance, _interactionLayer)) return false;
 
-            if (!hit.collider.TryGetComponent<InteractableBase>(out var interactable))
-                return false;
-
-            // Взаимодействуем через фасад
-            interactable.Interact(_facade, interactionType);
-            Debug.Log($"Взаимодействие [{interactionType}] с: {hit.collider.gameObject.name}");
+            var interactables = hit.collider.GetComponents<InteractableBase>();
+            foreach (var interactable in interactables)
+            {
+                interactable.Interact(_facade, interactionType);
+            }
 
             return true;
         }
@@ -109,10 +108,10 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
                 {
                     _interactableBase.CanInteract = false;
                 }
-                
+
                 return;
             }
-            
+
 
             if (!hit.collider.TryGetComponent<InteractableBase>(out var interactable))
             {
@@ -120,7 +119,7 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
                 {
                     _interactableBase.CanInteract = false;
                 }
-                
+
                 return;
             }
 
@@ -129,7 +128,7 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
             {
                 _interactableBase.CanInteract = false;
             }
-            
+
             _interactableBase = interactable;
             _interactableBase.CanInteract = true;
         }

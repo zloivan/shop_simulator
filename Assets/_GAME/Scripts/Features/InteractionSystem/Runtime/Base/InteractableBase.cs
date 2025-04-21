@@ -56,8 +56,7 @@ namespace Sim.Features.InteractionSystem.Base
             }
 
             InteractInternal(playerFacade, interactionType);
-            // Логика взаимодействия
-            Debug.Log($"Взаимодействие с {name} типа {interactionType}");
+            
         }
 
         public abstract void InteractInternal(IInteractor playerFacade, InteractionType interactionType);

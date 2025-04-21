@@ -7,10 +7,7 @@ namespace Sim.Features.InteractionSystem
     {
         public override void InteractInternal(IInteractor playerFacade, InteractionType interactionType)
         {
-            // Логика взаимодействия по умолчанию
-            Debug.Log($"Взаимодействие с {name} типа {interactionType}");
-
-            // Здесь можно добавить дополнительную логику, если необходимо
+            Debug.Log($"Взаимодействие с {name} типа ({nameof(DefaultInteractable)}) типа {interactionType}");
         }
     }
 }
