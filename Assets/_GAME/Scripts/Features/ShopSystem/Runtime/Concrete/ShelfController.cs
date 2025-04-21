@@ -1,10 +1,9 @@
 using IKhom.EventBusSystem.Runtime;
+using Sim.Core.Extentions;
 using Sim.Features.InteractionSystem.Base;
-using Sim.Features.InventorySystem.Concrete;
-using Sim.Features.InventorySystem.Extensions;
-using Sim.Features.PlayerSystem.Concrete;
+using Sim.Features.PlayerSystem;
+using Sim.Features.PlayerSystem.Conponents;
 using Sim.Features.ProductSystem.Concrete;
-using Sim.Features.ProductSystem.Data;
 using Sim.Features.ShopSystem.Configs;
 using Sim.Features.ShopSystem.Events;
 using Sirenix.OdinInspector;
@@ -16,7 +15,6 @@ namespace Sim.Features.ShopSystem.Runtime.Concrete
     {
         [SerializeField] private ShelfConfig _shelfConfig;
         [SerializeField] private ProductFactory _productFactory;
-        [SerializeField] private Renderer _shelfRenderer;
 
         
         [SerializeReference, ShowInInspector, ReadOnly]
@@ -28,7 +26,6 @@ namespace Sim.Features.ShopSystem.Runtime.Concrete
         {
             // Инициализация полки
             _shelf = Shelf.Create(_productFactory, _shelfConfig.ShelfId, _shelfConfig.Capacity);
-            UpdateShelfVisual();
         }
 
         private void OnEnable()
@@ -41,6 +38,15 @@ namespace Sim.Features.ShopSystem.Runtime.Concrete
             EventBus<ShopEvents.ProductRemovedFromShelfEvent>.Register(_productRemovedBinding);
         }
 
+        private void OnProductRemoved(ShopEvents.ProductRemovedFromShelfEvent obj)
+        {
+        }
+
+        private void OnProductAdded(ShopEvents.ProductAddedToShelfEvent obj)
+        {
+            
+        }
+
         private void OnDisable()
         {
             // Отписка от событий полки
@@ -48,44 +54,14 @@ namespace Sim.Features.ShopSystem.Runtime.Concrete
             EventBus<ShopEvents.ProductRemovedFromShelfEvent>.Deregister(_productRemovedBinding);
         }
 
-        private void OnProductAdded(ShopEvents.ProductAddedToShelfEvent evt)
-        {
-            if (evt.ShelfId == _shelf.Id)
-            {
-                UpdateShelfVisual();
-            }
-        }
-
-        private void OnProductRemoved(ShopEvents.ProductRemovedFromShelfEvent evt)
-        {
-            if (evt.ShelfId == _shelf.Id)
-            {
-                UpdateShelfVisual();
-            }
-        }
-
-        private void UpdateShelfVisual()
-        {
-            if (_shelfRenderer == null) return;
-
-            // Обновление цвета полки в зависимости от заполненности
-            var shelfColor = _shelf.CurrentCount == 0
-                ? _shelfConfig.EmptyColor
-                : _shelf.CurrentCount >= _shelf.Capacity
-                    ? _shelfConfig.FullColor
-                    : _shelfConfig.PartiallyFilledColor;
-
-            _shelfRenderer.material.color = shelfColor;
-        }
-
-        public void InteractPrimary(PlayerFacade player)
+        public void InteractPrimary(PlayerFacade playerFacade)
         {
             // Логика взятия товара с полки
             if (_shelf.Products.Count <= 0) 
                 return;
             
             var product = _shelf.Products[0];
-            var playerInventory = player.GetComponent<PlayerInventoryComponent>();
+            var playerInventory = playerFacade.Inventory;
 
             if (playerInventory == null) 
                 return;
@@ -99,7 +75,7 @@ namespace Sim.Features.ShopSystem.Runtime.Concrete
         public void InteractSecondary(PlayerFacade player)
         {
             // Получаем компонент инвентаря игрока
-            var playerInventoryComponent = player.GetComponent<PlayerInventoryComponent>();
+            var playerInventoryComponent =  player.Inventory;
     
             if (playerInventoryComponent == null)
             {

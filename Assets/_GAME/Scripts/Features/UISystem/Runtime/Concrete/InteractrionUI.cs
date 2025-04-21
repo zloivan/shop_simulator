@@ -1,5 +1,5 @@
 using Sim.Features.InteractionSystem.Base;
-using Sim.Features.PlayerSystem.Concrete;
+using Sim.Features.PlayerSystem;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;

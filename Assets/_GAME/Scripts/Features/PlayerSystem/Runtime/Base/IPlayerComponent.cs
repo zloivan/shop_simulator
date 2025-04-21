@@ -1,5 +1,3 @@
-using Sim.Features.PlayerSystem.Concrete;
-
 namespace Sim.Features.PlayerSystem.Base
 {
     public interface IPlayerComponent

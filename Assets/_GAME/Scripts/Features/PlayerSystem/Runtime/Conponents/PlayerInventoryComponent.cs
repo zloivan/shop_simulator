@@ -1,10 +1,10 @@
 using System;
 using IKhom.EventBusSystem.Runtime;
-using Sim.Features.InventorySystem.Concrete;
+using Sim.Features.InventorySystem.Runtime;
 using Sim.Features.PlayerSystem.Base;
 using UnityEngine;
 
-namespace Sim.Features.PlayerSystem.Concrete
+namespace Sim.Features.PlayerSystem.Conponents
 {
     public class PlayerInventoryComponent : MonoBehaviour, IPlayerComponent
     {

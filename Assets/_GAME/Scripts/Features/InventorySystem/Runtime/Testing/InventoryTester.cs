@@ -1,9 +1,9 @@
 using Sim.Features.InteractionSystem.Base;
-using Sim.Features.InventorySystem.Concrete;
-using Sim.Features.PlayerSystem.Concrete;
+using Sim.Features.PlayerSystem;
+using Sim.Features.PlayerSystem.Conponents;
 using UnityEngine;
 
-namespace Sim.Features.InventorySystem.Testing
+namespace Sim.Features.InventorySystem.Runtime.Testing
 {
     public class InventoryTester : MonoBehaviour, IInteractable
     {
@@ -17,12 +17,12 @@ namespace Sim.Features.InventorySystem.Testing
             name = _itemName + " " + _itemId + $" {_itemWeight}" + " (InventoryTester)";
         }
 
-        public void InteractPrimary(PlayerFacade player)
+        public void InteractPrimary(PlayerFacade playerFacade)
         {
             Debug.Log($"Попытка добавить предмет {_itemName} в инвентарь");
 
             // Получаем компонент инвентаря игрока
-            var playerInventory = player.GetComponent<PlayerInventoryComponent>();
+            var playerInventory = playerFacade.GetComponent<PlayerInventoryComponent>();
 
             if (playerInventory == null)
             {

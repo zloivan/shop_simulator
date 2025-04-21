@@ -4,9 +4,9 @@ using System.Linq;
 using IKhom.EventBusSystem.Runtime;
 using IKhom.EventBusSystem.Runtime.abstractions;
 using JetBrains.Annotations;
-using Sim.Features.InventorySystem.Base;
+using Sim.Features.InventorySystem.Runtime.Base;
 
-namespace Sim.Features.InventorySystem.Concrete
+namespace Sim.Features.InventorySystem.Runtime
 {
     // События инвентаря
     public struct ItemAddedEvent : IEvent

@@ -1,7 +1,7 @@
-using Sim.Features.InventorySystem.Base;
+using Sim.Features.InventorySystem.Runtime.Base;
 using UnityEngine;
 
-namespace Sim.Features.InventorySystem.Concrete
+namespace Sim.Features.InventorySystem.Runtime
 {
     // Иммутабельная реализация предмета инвентаря
     public class InventoryItemData

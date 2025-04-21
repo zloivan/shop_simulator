@@ -1,6 +1,4 @@
-using UnityEngine;
-
-namespace Sim.Features.InventorySystem.Base
+namespace Sim.Features.InventorySystem.Runtime.Base
 {
     public interface IInventoryItem
     {
