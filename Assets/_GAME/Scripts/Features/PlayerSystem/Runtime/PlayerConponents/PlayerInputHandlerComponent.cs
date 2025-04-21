@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using Sim.Features.InteractionSystem.Base;
 using Sim.Features.PlayerSystem.Base;
@@ -7,7 +8,6 @@ using UnityEngine.InputSystem;
 
 namespace Sim.Features.PlayerSystem.PlayerConponents
 {
-    
     public class PlayerInputHandlerComponent : MonoBehaviour, IPlayerComponent
     {
         // Событийная система для передачи ввода через фасад
@@ -20,35 +20,32 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
         [PublicAPI] public event Action OnSprintReleased;
 
         // Свойства для доступа к значениям ввода через фасад
-        [PublicAPI]  public Vector2 MoveInput { get; private set; }
+        [PublicAPI] public Vector2 MoveInput { get; private set; }
         [PublicAPI] public Vector2 LookInput { get; private set; }
-        [PublicAPI]  public bool IsJumpPressed { get; private set; }
+        [PublicAPI] public bool IsJumpPressed { get; private set; }
         [PublicAPI] public bool IsSprintPressed { get; private set; }
         [PublicAPI] public bool IsRunning => MoveInput.magnitude > 0.1f;
+
+        [SerializeField] private bool _isDebug;
+        
 
         // Ссылка на фасад
         private PlayerFacade _facade;
 
         // Система ввода Unity
         private PlayerInputData _playerInputData;
+        private Dictionary<string, InteractionType> _interactionMap = new();
 
         #region Unity Lifecycle
 
-        private void Awake()
-        {
-            _playerInputData = new PlayerInputData();
-        }
-
         private void OnEnable()
         {
-            _playerInputData.Enable();
-            SetupInputHandlers();
+            _playerInputData?.Enable();
         }
 
         private void OnDisable()
         {
-            _playerInputData.Disable();
-            RemoveInputHandlers();
+            _playerInputData?.Disable();
         }
 
         #endregion
@@ -58,6 +55,16 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
         public void Initialize(PlayerFacade facade)
         {
             _facade = facade;
+            _playerInputData = new PlayerInputData();
+            _playerInputData.Enable();
+            SetupInputHandlers();
+
+            _interactionMap = new Dictionary<string, InteractionType>()
+            {
+                { nameof(PlayerInputData.PlayerActions.InteractPrimary), InteractionType.Primary },
+                { nameof(PlayerInputData.PlayerActions.InteractSecondary), InteractionType.Secondary },
+                { nameof(PlayerInputData.PlayerActions.DropItem), InteractionType.DropItem }
+            };
         }
 
         #endregion
@@ -78,28 +85,10 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
 
             _playerInputData.Player.InteractPrimary.performed += OnInteractPerformed;
             _playerInputData.Player.InteractSecondary.performed += OnInteractPerformed;
+            _playerInputData.Player.DropItem.performed += OnInteractPerformed;
 
             _playerInputData.Player.Sprint.performed += OnSprintPerformed;
             _playerInputData.Player.Sprint.canceled += OnSprintCanceled;
-        }
-
-        private void RemoveInputHandlers()
-        {
-            // Удаление обработчиков событий ввода
-            _playerInputData.Player.Move.performed -= OnMoveInput;
-            _playerInputData.Player.Move.canceled -= OnMoveInput;
-
-            _playerInputData.Player.Look.performed -= OnLookInput;
-            _playerInputData.Player.Look.canceled -= OnLookInput;
-
-            _playerInputData.Player.Jump.performed -= OnJumpPerformed;
-            _playerInputData.Player.Jump.canceled -= OnJumpCanceled;
-
-            _playerInputData.Player.InteractPrimary.performed -= OnInteractPerformed;
-            _playerInputData.Player.InteractSecondary.performed -= OnInteractPerformed;
-
-            _playerInputData.Player.Sprint.performed -= OnSprintPerformed;
-            _playerInputData.Player.Sprint.canceled -= OnSprintCanceled;
         }
 
         #endregion
@@ -132,13 +121,14 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
 
         private void OnInteractPerformed(InputAction.CallbackContext context)
         {
-            if (context.action.name == _playerInputData.Player.InteractPrimary.name)
+            if (_interactionMap.TryGetValue(context.action.name, out var interactionType))
             {
-                OnInteractPressed?.Invoke(InteractionType.Primary);
-            }
-            else if (context.action.name == _playerInputData.Player.InteractSecondary.name)
-            {
-                OnInteractPressed?.Invoke(InteractionType.Secondary);
+                if (_isDebug)
+                {
+                    Debug.Log(interactionType);
+                }
+                
+                OnInteractPressed?.Invoke(interactionType);
             }
         }
 

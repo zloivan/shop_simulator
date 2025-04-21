@@ -8,6 +8,7 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
     public class PlayerHandsController : MonoBehaviour, IPlayerComponent
     {
         [SerializeField] private Transform _handsTransform;
+        [SerializeField] private float _throwForce = 3f;
 
         private PlayerFacade _facade;
         private GameObject _itemInHands;
@@ -45,15 +46,6 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
                 {
                     _handsTransform.localPosition = new Vector3(0, 0, 1f);
                 }
-            }
-        }
-
-
-        private void OnDisable()
-        {
-            if (_facade != null)
-            {
-                _facade.OnInteractPressed -= HandleInteraction;
             }
         }
 
@@ -102,7 +94,7 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
             if (droppedItem.TryGetComponent<Rigidbody>(out var rb))
             {
                 rb.isKinematic = false;
-                rb.AddForce(_facade.PlayerCamera.transform.forward * 3f, ForceMode.Impulse);
+                rb.AddForce(_facade.PlayerCamera.transform.forward * _throwForce, ForceMode.Impulse);
             }
 
             if (droppedItem.TryGetComponent<Collider>(out var collider))
