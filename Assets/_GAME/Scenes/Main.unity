@@ -376,10 +376,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 288399256}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fab48997bc9248c9857cee631b47590b, type: 3}
+  m_Script: {fileID: 11500000, guid: b2bc019e0e0f4c0f870fe5ef8dffcd02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _shouldHighlight: 1
+  _interactionType: 0
   _outline: {fileID: 288399262}
 --- !u!114 &288399262
 MonoBehaviour:
@@ -735,10 +736,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 561781427}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fab48997bc9248c9857cee631b47590b, type: 3}
+  m_Script: {fileID: 11500000, guid: b2bc019e0e0f4c0f870fe5ef8dffcd02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _shouldHighlight: 1
+  _interactionType: 0
   _outline: {fileID: 561781433}
 --- !u!114 &561781433
 MonoBehaviour:
@@ -1058,10 +1060,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 945331067}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fab48997bc9248c9857cee631b47590b, type: 3}
+  m_Script: {fileID: 11500000, guid: b2bc019e0e0f4c0f870fe5ef8dffcd02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _shouldHighlight: 1
+  _interactionType: 0
   _outline: {fileID: 945331072}
 --- !u!1001 &1002196200
 PrefabInstance:
@@ -1292,10 +1295,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2139611180}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fab48997bc9248c9857cee631b47590b, type: 3}
+  m_Script: {fileID: 11500000, guid: b2bc019e0e0f4c0f870fe5ef8dffcd02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _shouldHighlight: 1
+  _interactionType: 0
   _outline: {fileID: 2139611187}
 --- !u!114 &2139611187
 MonoBehaviour:

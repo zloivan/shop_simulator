@@ -90,7 +90,7 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
             if (!Physics.Raycast(_interactionRayOrigin.position, _interactionRayOrigin.forward, out var hit,
                     _interactionDistance, _interactionLayer)) return false;
 
-            if (!hit.collider.TryGetComponent<IInteractable>(out var interactable))
+            if (!hit.collider.TryGetComponent<InteractableBase>(out var interactable))
                 return false;
 
             // Взаимодействуем через фасад

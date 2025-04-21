@@ -7,7 +7,6 @@ using Sim.Features.ShopSystem.Configs;
 using Sim.Features.ShopSystem.Events;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Sim.Features.ShopSystem.Runtime.Concrete
 {
@@ -54,7 +53,7 @@ namespace Sim.Features.ShopSystem.Runtime.Concrete
             EventBus<ShopEvents.ProductRemovedFromShelfEvent>.Deregister(_productRemovedBinding);
         }
 
-        public override void Interact(IInteractor playerFacade, InteractionType interactionType)
+        public override void InteractInternal(IInteractor playerFacade, InteractionType interactionType)
         {
             Debug.Log(interactionType);
             // Логика взятия товара с полки
@@ -73,32 +72,32 @@ namespace Sim.Features.ShopSystem.Runtime.Concrete
             _shelf.RemoveProduct(product.Id);
         }
 
-        public void InteractSecondary(IInteractor player)
-        {
-            // Получаем компонент инвентаря игрока
-            var playerInventoryComponent = ((PlayerFacade)player).Inventory;
-
-            if (playerInventoryComponent == null)
-            {
-                Debug.LogWarning("У игрока нет компонента инвентаря!");
-                return;
-            }
-
-            var inventory = playerInventoryComponent.Inventory;
-
-            // Если в инвентаре есть предметы и на полке есть место
-            if (inventory.Items.Count <= 0 || _shelf.CurrentCount >= _shelf.Capacity)
-                return;
-
-            // Берем первый предмет из инвентаря
-            var inventoryItem = inventory.Items[0];
-
-            // Пытаемся добавить на полку
-            if (_shelf.AddProduct(inventoryItem.ToProduct()))
-            {
-                // Если удалось добавить, удаляем из инвентаря
-                inventory.RemoveItem(inventoryItem.Id);
-            }
-        }
+        // public void InteractSecondary(IInteractor player)
+        // {
+        //     // Получаем компонент инвентаря игрока
+        //     var playerInventoryComponent = ((PlayerFacade)player).Inventory;
+        //
+        //     if (playerInventoryComponent == null)
+        //     {
+        //         Debug.LogWarning("У игрока нет компонента инвентаря!");
+        //         return;
+        //     }
+        //
+        //     var inventory = playerInventoryComponent.Inventory;
+        //
+        //     // Если в инвентаре есть предметы и на полке есть место
+        //     if (inventory.Items.Count <= 0 || _shelf.CurrentCount >= _shelf.Capacity)
+        //         return;
+        //
+        //     // Берем первый предмет из инвентаря
+        //     var inventoryItem = inventory.Items[0];
+        //
+        //     // Пытаемся добавить на полку
+        //     if (_shelf.AddProduct(inventoryItem.ToProduct()))
+        //     {
+        //         // Если удалось добавить, удаляем из инвентаря
+        //         inventory.RemoveItem(inventoryItem.Id);
+        //     }
+        // }
     }
 }

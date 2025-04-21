@@ -1,17 +1,14 @@
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using IKhom.ExtensionsLibrary.Runtime;
-using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Sim.Features.InteractionSystem.Base
 {
-    public class InteractableBase : MonoBehaviour, IInteractable
+    public abstract class InteractableBase : MonoBehaviour, IInteractable
     {
         [SerializeField] private bool _shouldHighlight = true;
         [SerializeField] private InteractionType _interactionType;
-        [SerializeField] private Outline _outline;
+        [SerializeField, HideInInspector] private Outline _outline;
         private bool _canInteract;
 
 
@@ -51,16 +48,19 @@ namespace Sim.Features.InteractionSystem.Base
             }
         }
 
-        public virtual void Interact(IInteractor playerFacade, InteractionType interactionType)
+        public void Interact(IInteractor playerFacade, InteractionType interactionType)
         {
             if (interactionType != _interactionType)
             {
                 return;
             }
 
+            InteractInternal(playerFacade, interactionType);
             // Логика взаимодействия
             Debug.Log($"Взаимодействие с {name} типа {interactionType}");
         }
+
+        public abstract void InteractInternal(IInteractor playerFacade, InteractionType interactionType);
 
         public bool CanInteract
         {
