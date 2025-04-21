@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using IKhom.ExtensionsLibrary.Runtime;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -9,29 +11,25 @@ namespace Sim.Features.InteractionSystem.Base
     {
         [SerializeField] private bool _shouldHighlight = true;
 
-        [SerializeField] [ShowIf(nameof(_shouldHighlight))]
-        private Color _highlightColor = Color.green;
-
-        [SerializeField] [ShowIf(nameof(_shouldHighlight))]
-        private float _highlightWidth = 2f;
-
-
-        [SerializeField, HideInInspector] private Outline _outline;
+        [SerializeField] private Outline _outline;
         private bool _canInteract;
 
 
         protected virtual void Awake()
         {
-            if (_shouldHighlight && _outline == null)
+            ManageHighlight().Forget();
+        }
+
+        private async UniTask ManageHighlight()
+        {
+            if (!_shouldHighlight) return;
+
+            if (_outline == null)
             {
                 _outline = gameObject.GetOrAddComponent<Outline>();
             }
-        }
 
-        private void Start()
-        {
-            _outline.OutlineColor = _highlightColor;
-            _outline.OutlineWidth = _highlightWidth;
+            await UniTask.WaitForEndOfFrame(this);
             _outline.enabled = false;
         }
 
@@ -63,7 +61,11 @@ namespace Sim.Features.InteractionSystem.Base
             set
             {
                 _canInteract = value;
-                _outline.enabled = _shouldHighlight && _canInteract;
+                
+                if (_shouldHighlight)
+                {
+                    _outline.enabled = _canInteract;
+                }
             }
         }
     }
