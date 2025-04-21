@@ -1,25 +1,18 @@
-using System;
 using System.Linq;
 using Sim.Features.InteractionSystem.Base;
 using Sim.Features.InventorySystem.Runtime;
 using Sim.Features.PlayerSystem;
-using Sim.Features.PlayerSystem.PlayerConponents;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Sim.Features.ProductSystem.Concrete
 {
     /// <summary>
     /// Компонент для физического представления коробки с товарами
     /// </summary>
-    public class ProductBoxController : MonoBehaviour, IInteractable
+    public class ProductBoxController : InteractableBase
     {
         [SerializeField] private ProductFactory _productFactory;
-
-        // [Header("Визуальные настройки")]
-        // [SerializeField] private Renderer _boxRenderer;
-        // [SerializeField] private Color _emptyBoxColor = Color.gray;
-        // [SerializeField] private Color _filledBoxColor = Color.green;
-        // [SerializeField] private Color _fullColor = Color.red;
 
         private ProductBox _productBox;
         
@@ -40,19 +33,12 @@ namespace Sim.Features.ProductSystem.Concrete
 
         private void UpdateBoxVisual()
         {
-            // if (_boxRenderer != null)
-            // {
-            //     _boxRenderer.material.color = _productBox.CurrentCount == _productBox.Capacity 
-            //         ? _fullColor 
-            //         : _productBox.CurrentCount > 0 
-            //             ? _filledBoxColor 
-            //             : _emptyBoxColor;
-            // }
+        
         }
 
-        public void InteractPrimary(PlayerFacade playerFacade)
+        public override void Interact(IInteractor playerFacade, InputAction.CallbackContext callbackContext)
         {
-            var playerInventory = playerFacade.GetComponent<PlayerInventoryComponent>();
+            var playerInventory = ((PlayerFacade)playerFacade).Inventory;
 
             if (playerInventory == null)
             {
@@ -96,7 +82,7 @@ namespace Sim.Features.ProductSystem.Concrete
             UpdateBoxVisual();
         }
 
-        public void InteractSecondary(PlayerFacade player)
+        public void InteractSecondary(IInteractor player)
         {
             if (_productFactory == null)
             {
