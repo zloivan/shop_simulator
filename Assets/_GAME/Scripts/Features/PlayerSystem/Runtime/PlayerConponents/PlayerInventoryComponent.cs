@@ -4,7 +4,7 @@ using Sim.Features.InventorySystem.Runtime;
 using Sim.Features.PlayerSystem.Base;
 using UnityEngine;
 
-namespace Sim.Features.PlayerSystem.Conponents
+namespace Sim.Features.PlayerSystem.PlayerConponents
 {
     public class PlayerInventoryComponent : MonoBehaviour, IPlayerComponent
     {

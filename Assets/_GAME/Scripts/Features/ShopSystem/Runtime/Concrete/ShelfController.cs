@@ -2,7 +2,6 @@ using IKhom.EventBusSystem.Runtime;
 using Sim.Core.Extentions;
 using Sim.Features.InteractionSystem.Base;
 using Sim.Features.PlayerSystem;
-using Sim.Features.PlayerSystem.Conponents;
 using Sim.Features.ProductSystem.Concrete;
 using Sim.Features.ShopSystem.Configs;
 using Sim.Features.ShopSystem.Events;
