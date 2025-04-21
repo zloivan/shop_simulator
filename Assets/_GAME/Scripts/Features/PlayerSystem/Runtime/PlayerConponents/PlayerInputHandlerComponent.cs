@@ -4,7 +4,7 @@ using Sim.Features.PlayerSystem.Base;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Sim.Features.PlayerSystem.Conponents
+namespace Sim.Features.PlayerSystem.PlayerConponents
 {
     public class PlayerInputHandlerComponent : MonoBehaviour, IPlayerComponent
     {

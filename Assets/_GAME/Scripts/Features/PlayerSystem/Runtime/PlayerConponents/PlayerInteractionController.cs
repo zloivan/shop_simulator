@@ -2,7 +2,7 @@ using Sim.Features.InteractionSystem.Base;
 using Sim.Features.PlayerSystem.Base;
 using UnityEngine;
 
-namespace Sim.Features.PlayerSystem.Conponents
+namespace Sim.Features.PlayerSystem.PlayerConponents
 {
     public class PlayerInteractionController : MonoBehaviour, IPlayerComponent
     {
@@ -119,6 +119,15 @@ namespace Sim.Features.PlayerSystem.Conponents
             // Взаимодействуем через фасад
             interactable.InteractSecondary(_facade);
             Debug.Log("Вторичное взаимодействие с: " + hit.collider.gameObject.name);
+        }
+
+        private void Update()
+        {
+            if (!Physics.Raycast(_interactionRayOrigin.position, _interactionRayOrigin.forward, out var hit,
+                    _interactionDistance, _interactionLayer)) 
+                return;
+            
+            
         }
 
         #endregion

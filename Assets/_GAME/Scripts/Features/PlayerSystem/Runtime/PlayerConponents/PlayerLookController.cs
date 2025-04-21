@@ -1,7 +1,7 @@
 using Sim.Features.PlayerSystem.Base;
 using UnityEngine;
 
-namespace Sim.Features.PlayerSystem.Conponents
+namespace Sim.Features.PlayerSystem.PlayerConponents
 {
     public class PlayerLookController : MonoBehaviour, IPlayerComponent
     {

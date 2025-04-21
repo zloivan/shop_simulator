@@ -1,6 +1,6 @@
 using Sim.Features.InteractionSystem.Base;
 using Sim.Features.PlayerSystem;
-using Sim.Features.PlayerSystem.Conponents;
+using Sim.Features.PlayerSystem.PlayerConponents;
 using UnityEngine;
 
 namespace Sim.Features.InventorySystem.Runtime.Testing

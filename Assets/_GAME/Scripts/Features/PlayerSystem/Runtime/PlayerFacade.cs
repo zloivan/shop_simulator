@@ -1,6 +1,6 @@
 using System;
 using Sim.Features.PlayerSystem.Base;
-using Sim.Features.PlayerSystem.Conponents;
+using Sim.Features.PlayerSystem.PlayerConponents;
 using UnityEngine;
 
 namespace Sim.Features.PlayerSystem
