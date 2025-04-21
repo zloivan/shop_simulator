@@ -74,10 +74,7 @@ namespace Sim.Features.PlayerSystem.Concrete
 
         private void SubscribeToEvents()
         {
-            // Подписываемся на события фасада вместо прямого обращения к другим компонентам
             _facade.OnJumpPressed += HandleJumpPressed;
-            _facade.OnSprintPressed += HandleSprintPressed;
-            _facade.OnSprintReleased += HandleSprintReleased;
         }
 
         private void UnsubscribeFromEvents()
@@ -85,8 +82,6 @@ namespace Sim.Features.PlayerSystem.Concrete
             if (_facade == null) return;
 
             _facade.OnJumpPressed -= HandleJumpPressed;
-            _facade.OnSprintPressed -= HandleSprintPressed;
-            _facade.OnSprintReleased -= HandleSprintReleased;
         }
 
         #endregion
@@ -153,19 +148,6 @@ namespace Sim.Features.PlayerSystem.Concrete
         {
             _wantsToJump = true;
         }
-
-        private void HandleSprintPressed()
-        {
-            // Логика при начале спринта
-            Debug.Log("Sprinting started");
-        }
-
-        private void HandleSprintReleased()
-        {
-            // Логика при окончании спринта
-            Debug.Log("Sprinting stopped");
-        }
-
         #endregion
     }
 }

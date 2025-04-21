@@ -2,6 +2,7 @@ using Sim.Features.InteractionSystem.Base;
 using Sim.Features.PlayerSystem.Concrete;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Sim.Features.UISystem.Runtime.Concrete
@@ -10,7 +11,7 @@ namespace Sim.Features.UISystem.Runtime.Concrete
     {
         [SerializeField] private Image _crosshair;
         [SerializeField] private TextMeshProUGUI _interactText;
-        [SerializeField] private PlayerFacade _playerController;
+        [FormerlySerializedAs("_playerController")] [SerializeField] private PlayerFacade _playerFacade;
 
         [Header("UI Colors")]
         [SerializeField] private Color _defaultCrosshairColor = Color.white;
@@ -25,21 +26,23 @@ namespace Sim.Features.UISystem.Runtime.Concrete
 
         private void Awake()
         {
-            if (_playerController == null)
+            if (_playerFacade == null)
             {
-                _playerController = FindObjectOfType<PlayerFacade>();
+                _playerFacade = FindObjectOfType<PlayerFacade>();
             }
         }
 
         private void Update()
         {
-            if (_playerController == null)
+            if (_playerFacade == null)
             {
                 return;
             }
 
-            if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit,
-                    _playerController.InteractionDistance))
+            var playerCameraTransform = _playerFacade.PlayerCamera.transform;
+            
+            if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out var hit,
+                    _playerFacade.InteractionDistance))
             {
                 if (hit.collider.GetComponent<IInteractable>() != null)
                 {

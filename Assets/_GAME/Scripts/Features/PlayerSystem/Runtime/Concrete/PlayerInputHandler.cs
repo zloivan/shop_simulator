@@ -1,4 +1,5 @@
 using System;
+using JetBrains.Annotations;
 using Sim.Features.PlayerSystem.Base;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -8,21 +9,21 @@ namespace Sim.Features.PlayerSystem.Concrete
     public class PlayerInputHandler : MonoBehaviour, IPlayerComponent
     {
         // Событийная система для передачи ввода через фасад
-        public event Action<Vector2> OnMoveInputChanged;
-        public event Action<Vector2> OnLookInputChanged;
-        public event Action OnJumpPressed;
-        public event Action OnJumpReleased;
-        public event Action OnInteractPrimaryPressed;
-        public event Action OnInteractSecondaryPressed;
-        public event Action OnSprintPressed;
-        public event Action OnSprintReleased;
+        [PublicAPI] public event Action<Vector2> OnMoveInputChanged;
+        [PublicAPI] public event Action<Vector2> OnLookInputChanged;
+        [PublicAPI] public event Action OnJumpPressed;
+        [PublicAPI] public event Action OnJumpReleased;
+        [PublicAPI] public event Action OnInteractPrimaryPressed;
+        [PublicAPI] public event Action OnInteractSecondaryPressed;
+        [PublicAPI] public event Action OnSprintPressed;
+        [PublicAPI] public event Action OnSprintReleased;
 
         // Свойства для доступа к значениям ввода через фасад
-        public Vector2 MoveInput { get; private set; }
-        public Vector2 LookInput { get; private set; }
-        public bool IsJumpPressed { get; private set; }
-        public bool IsSprintPressed { get; private set; }
-        public bool IsRunning => MoveInput.magnitude > 0.1f;
+        [PublicAPI]  public Vector2 MoveInput { get; private set; }
+        [PublicAPI] public Vector2 LookInput { get; private set; }
+        [PublicAPI]  public bool IsJumpPressed { get; private set; }
+        [PublicAPI] public bool IsSprintPressed { get; private set; }
+        [PublicAPI] public bool IsRunning => MoveInput.magnitude > 0.1f;
 
         // Ссылка на фасад
         private PlayerFacade _facade;
