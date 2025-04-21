@@ -10,7 +10,7 @@ namespace Sim.Features.InteractionSystem.Base
     public class InteractableBase : MonoBehaviour, IInteractable
     {
         [SerializeField] private bool _shouldHighlight = true;
-
+        [SerializeField] private InteractionType _interactionType;
         [SerializeField] private Outline _outline;
         private bool _canInteract;
 
@@ -51,8 +51,15 @@ namespace Sim.Features.InteractionSystem.Base
             }
         }
 
-        public virtual void Interact(IInteractor playerFacade, InputAction.CallbackContext callbackContext)
+        public virtual void Interact(IInteractor playerFacade, InteractionType interactionType)
         {
+            if (interactionType != _interactionType)
+            {
+                return;
+            }
+
+            // Логика взаимодействия
+            Debug.Log($"Взаимодействие с {name} типа {interactionType}");
         }
 
         public bool CanInteract

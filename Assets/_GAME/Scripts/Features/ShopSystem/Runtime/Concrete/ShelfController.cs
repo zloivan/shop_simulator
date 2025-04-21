@@ -54,9 +54,9 @@ namespace Sim.Features.ShopSystem.Runtime.Concrete
             EventBus<ShopEvents.ProductRemovedFromShelfEvent>.Deregister(_productRemovedBinding);
         }
 
-        public override void Interact(IInteractor playerFacade, InputAction.CallbackContext callbackContext)
+        public override void Interact(IInteractor playerFacade, InteractionType interactionType)
         {
-            Debug.Log(callbackContext.action);
+            Debug.Log(interactionType);
             // Логика взятия товара с полки
             if (_shelf.Products.Count <= 0)
                 return;

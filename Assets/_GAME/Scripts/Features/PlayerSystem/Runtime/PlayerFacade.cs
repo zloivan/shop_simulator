@@ -17,7 +17,7 @@ namespace Sim.Features.PlayerSystem
     {
         #region События (перенаправляются от компонентов)
 
-        public event Action<InputAction.CallbackContext > OnInteractPressed;
+        public event Action<InteractionType> OnInteractPressed;
         public event Action OnInteractSecondaryPressed;
         public event Action OnJumpPressed;
 

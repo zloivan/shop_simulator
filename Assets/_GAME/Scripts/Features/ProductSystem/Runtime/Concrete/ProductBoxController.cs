@@ -36,7 +36,7 @@ namespace Sim.Features.ProductSystem.Concrete
         
         }
 
-        public override void Interact(IInteractor playerFacade, InputAction.CallbackContext callbackContext)
+        public override void Interact(IInteractor playerFacade, InteractionType interactionType)
         {
             var playerInventory = ((PlayerFacade)playerFacade).Inventory;
 

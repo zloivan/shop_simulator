@@ -79,13 +79,13 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
 
         #region Interaction Logic
 
-        private void HandleInteractPressed(InputAction.CallbackContext callbackContext)
+        private void HandleInteractPressed(InteractionType callbackContext)
         {
             TryInteract(callbackContext);
         }
 
         // Публично доступный метод для использования через фасад
-        public bool TryInteract(InputAction.CallbackContext callbackContext)
+        public bool TryInteract(InteractionType interactionType)
         {
             if (!Physics.Raycast(_interactionRayOrigin.position, _interactionRayOrigin.forward, out var hit,
                     _interactionDistance, _interactionLayer)) return false;
@@ -94,8 +94,8 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
                 return false;
 
             // Взаимодействуем через фасад
-            interactable.Interact(_facade, callbackContext);
-            Debug.Log($"Взаимодействие [{callbackContext.action.name}] с: {hit.collider.gameObject.name}");
+            interactable.Interact(_facade, interactionType);
+            Debug.Log($"Взаимодействие [{interactionType}] с: {hit.collider.gameObject.name}");
 
             return true;
         }
