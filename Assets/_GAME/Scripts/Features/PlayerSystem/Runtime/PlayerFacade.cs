@@ -57,6 +57,7 @@ namespace Sim.Features.PlayerSystem
         public bool IsSprinting => _movementController.IsSprinting;
         public float CurrentSpeed => _movementController.CurrentSpeed;
         public bool WantsToJump { get; set; }
+        public PlayerInventoryComponent Inventory { get; private set; }
 
         #endregion
 
@@ -69,6 +70,7 @@ namespace Sim.Features.PlayerSystem
             _inputHandlerComponent = GetComponent<PlayerInputHandlerComponent>();
             _movementController = GetComponent<PlayerMovementController>();
             _interactionController = GetComponent<PlayerInteractionController>();
+            Inventory = GetComponent<PlayerInventoryComponent>();
             _playerCamera = GetComponentInChildren<Camera>();
 
             if (_cameraHolder == null)

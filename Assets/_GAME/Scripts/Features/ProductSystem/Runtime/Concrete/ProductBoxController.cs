@@ -49,9 +49,9 @@ namespace Sim.Features.ProductSystem.Concrete
             }
         }
 
-        public void InteractPrimary(PlayerFacade player)
+        public void InteractPrimary(PlayerFacade playerFacade)
         {
-            var playerInventory = player.GetComponent<PlayerInventoryComponent>();
+            var playerInventory = playerFacade.GetComponent<PlayerInventoryComponent>();
 
             if (playerInventory == null)
             {

@@ -17,12 +17,12 @@ namespace Sim.Features.InventorySystem.Runtime.Testing
             name = _itemName + " " + _itemId + $" {_itemWeight}" + " (InventoryTester)";
         }
 
-        public void InteractPrimary(PlayerFacade player)
+        public void InteractPrimary(PlayerFacade playerFacade)
         {
             Debug.Log($"Попытка добавить предмет {_itemName} в инвентарь");
 
             // Получаем компонент инвентаря игрока
-            var playerInventory = player.GetComponent<PlayerInventoryComponent>();
+            var playerInventory = playerFacade.GetComponent<PlayerInventoryComponent>();
 
             if (playerInventory == null)
             {

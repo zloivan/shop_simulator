@@ -4,82 +4,18 @@ using UnityEngine;
 
 namespace Sim.Features.InteractionSystem
 {
-    
     public class InteractableItem : MonoBehaviour, IInteractable
     {
-        [SerializeField] private string itemName = "Item";
-        [SerializeField] private string primaryInteractionMessage = "You picked up an item";
-        [SerializeField] private string secondaryInteractionMessage = "You examined the item";
-
-        [SerializeField] private bool canPickUp = true;
-        [SerializeField] private bool destroyOnPickup = true;
-
-        [SerializeField] private AudioClip pickupSound;
-        [SerializeField] private AudioClip examineSound;
-
-        private AudioSource audioSource;
-
-        private void Awake()
+        [SerializeField] private bool _hasHighlight;
+        
+        public virtual void InteractPrimary(PlayerFacade playerFacade)
         {
-            audioSource = GetComponent<AudioSource>();
             
-            if (audioSource == null && (pickupSound != null || examineSound != null))
-            {
-                audioSource = gameObject.AddComponent<AudioSource>();
-            }
         }
 
-        private void OnValidate()
+        public virtual void InteractSecondary(PlayerFacade player)
         {
-            gameObject.name = $"{itemName} (InteractableItem)";
-        }
-
-        public void InteractPrimary(PlayerFacade player)
-        {
-            // Primary interaction (e.g., pick up)
-            Debug.Log(primaryInteractionMessage);
-
-            if (pickupSound != null && audioSource != null)
-            {
-                audioSource.PlayOneShot(pickupSound);
-            }
-
-            if (canPickUp)
-            {
-                // Add to inventory or perform other actions
-                
-                // Optionally destroy the object
-                if (destroyOnPickup)
-                {
-                    // Wait for sound to finish if there is one
-                    if (pickupSound != null && audioSource != null)
-                    {
-                        Destroy(gameObject, pickupSound.length);
-                    }
-                    else
-                    {
-                        Destroy(gameObject);
-                    }
-                }
-                else
-                {
-                    gameObject.SetActive(false);
-                }
-            }
-        }
-
-        public void InteractSecondary(PlayerFacade player)
-        {
-            // Secondary interaction (e.g., examine)
-            Debug.Log(secondaryInteractionMessage);
-
-            if (examineSound != null && audioSource != null)
-            {
-                audioSource.PlayOneShot(examineSound);
-            }
-
-            // Implement examination behavior
-            // For example, display item details UI, show a tooltip, etc.
+            
         }
     }
 }
