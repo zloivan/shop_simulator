@@ -55,11 +55,11 @@ namespace Sim.Features.InteractionSystem.Base
                 return;
             }
 
-            InteractInternal(playerFacade, interactionType);
+            InteractInternal(playerFacade);
             
         }
 
-        public abstract void InteractInternal(IInteractor playerFacade, InteractionType interactionType);
+        public abstract void InteractInternal(IInteractor playerFacade);
 
         public bool CanInteract
         {

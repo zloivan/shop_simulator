@@ -13,6 +13,7 @@ namespace Sim.Features.PlayerSystem
     [RequireComponent(typeof(PlayerLookController))]
     [RequireComponent(typeof(PlayerInteractionController))]
     [RequireComponent(typeof(PlayerInventoryComponent))]
+    [RequireComponent(typeof(PlayerHandsController))]
     public class PlayerFacade : MonoBehaviour, IInteractor
     {
         #region События (перенаправляются от компонентов)
@@ -30,6 +31,7 @@ namespace Sim.Features.PlayerSystem
         private PlayerInputHandlerComponent _inputHandlerComponent;
         private PlayerMovementController _movementController;
         private PlayerInteractionController _interactionController;
+        public PlayerHandsController HandsController { get; private set; }
         private Camera _playerCamera;
 
 
@@ -73,6 +75,7 @@ namespace Sim.Features.PlayerSystem
             _movementController = GetComponent<PlayerMovementController>();
             _interactionController = GetComponent<PlayerInteractionController>();
             Inventory = GetComponent<PlayerInventoryComponent>();
+            HandsController = GetComponent<PlayerHandsController>();
             _playerCamera = GetComponentInChildren<Camera>();
 
             if (_cameraHolder == null)

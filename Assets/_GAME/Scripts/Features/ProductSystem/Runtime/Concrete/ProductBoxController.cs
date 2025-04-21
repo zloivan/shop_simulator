@@ -35,7 +35,7 @@ namespace Sim.Features.ProductSystem.Concrete
         
         }
 
-        public override void InteractInternal(IInteractor playerFacade, InteractionType interactionType)
+        public override void InteractInternal(IInteractor playerFacade)
         {
             var playerInventory = ((PlayerFacade)playerFacade).Inventory;
 

@@ -53,10 +53,8 @@ namespace Sim.Features.ShopSystem.Runtime.Concrete
             EventBus<ShopEvents.ProductRemovedFromShelfEvent>.Deregister(_productRemovedBinding);
         }
 
-        public override void InteractInternal(IInteractor playerFacade, InteractionType interactionType)
+        public override void InteractInternal(IInteractor playerFacade)
         {
-            Debug.Log(interactionType);
-            // Логика взятия товара с полки
             if (_shelf.Products.Count <= 0)
                 return;
 
