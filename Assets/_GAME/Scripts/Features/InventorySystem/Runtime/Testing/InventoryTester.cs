@@ -1,9 +1,9 @@
 using Sim.Features.InteractionSystem.Base;
-using Sim.Features.InventorySystem.Concrete;
-using Sim.Features.PlayerSystem.Concrete;
+using Sim.Features.PlayerSystem;
+using Sim.Features.PlayerSystem.Conponents;
 using UnityEngine;
 
-namespace Sim.Features.InventorySystem.Testing
+namespace Sim.Features.InventorySystem.Runtime.Testing
 {
     public class InventoryTester : MonoBehaviour, IInteractable
     {

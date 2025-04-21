@@ -1,10 +1,10 @@
-using Sim.Features.InventorySystem.Base;
-using Sim.Features.InventorySystem.Concrete;
+using Sim.Features.InventorySystem.Runtime;
+using Sim.Features.InventorySystem.Runtime.Base;
 using Sim.Features.ProductSystem.Base;
 using Sim.Features.ProductSystem.Concrete;
 using Sim.Features.ProductSystem.Data;
 
-namespace Sim.Features.InventorySystem.Extensions
+namespace Sim.Core.Extentions
 {
     public static class InventoryItemExtensions
     {

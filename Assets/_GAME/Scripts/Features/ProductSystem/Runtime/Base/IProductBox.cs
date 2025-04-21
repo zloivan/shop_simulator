@@ -1,7 +1,6 @@
 using System.Collections.Generic;
-using Sim.Features.ProductSystem.Base;
 
-namespace Sim.Features.ProductSystem.Configs
+namespace Sim.Features.ProductSystem.Base
 {
     /// <summary>
     /// Интерфейс для коробок с товарами

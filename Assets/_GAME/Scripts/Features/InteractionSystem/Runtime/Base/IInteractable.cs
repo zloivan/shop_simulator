@@ -1,4 +1,4 @@
-using Sim.Features.PlayerSystem.Concrete;
+using Sim.Features.PlayerSystem;
 
 namespace Sim.Features.InteractionSystem.Base
 {

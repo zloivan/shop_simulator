@@ -4,9 +4,9 @@ using Sim.Features.PlayerSystem.Base;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Sim.Features.PlayerSystem.Concrete
+namespace Sim.Features.PlayerSystem.Conponents
 {
-    public class PlayerInputHandler : MonoBehaviour, IPlayerComponent
+    public class PlayerInputHandlerComponent : MonoBehaviour, IPlayerComponent
     {
         // Событийная система для передачи ввода через фасад
         [PublicAPI] public event Action<Vector2> OnMoveInputChanged;

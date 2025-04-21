@@ -2,7 +2,7 @@ using Sim.Features.InteractionSystem.Base;
 using Sim.Features.PlayerSystem.Base;
 using UnityEngine;
 
-namespace Sim.Features.PlayerSystem.Concrete
+namespace Sim.Features.PlayerSystem.Conponents
 {
     public class PlayerInteractionController : MonoBehaviour, IPlayerComponent
     {

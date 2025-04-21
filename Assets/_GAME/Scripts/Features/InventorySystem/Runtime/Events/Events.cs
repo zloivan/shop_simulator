@@ -1,6 +1,6 @@
 using IKhom.EventBusSystem.Runtime.abstractions;
 
-namespace Sim.Features.InventorySystem.Events
+namespace Sim.Features.InventorySystem.Runtime.Events
 {
     public struct ItemAddedEvent : IEvent
     {
