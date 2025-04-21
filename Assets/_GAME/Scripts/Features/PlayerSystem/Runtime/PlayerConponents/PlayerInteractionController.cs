@@ -24,16 +24,7 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
 
         #region Unity Lifecycle
 
-        private void Awake()
-        {
-            _playerCamera = _facade.PlayerCamera;
-            
-            if (_interactionRayOrigin == null)
-            {
-                _interactionRayOrigin = _playerCamera.transform;
-            }
-        }
-
+        
         private void OnEnable()
         {
             if (_facade != null)
@@ -55,6 +46,13 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
         {
             _facade = facade;
             SubscribeToEvents();
+            
+            _playerCamera = _facade.PlayerCamera;
+            
+            if (_interactionRayOrigin == null)
+            {
+                _interactionRayOrigin = _playerCamera.transform;
+            }
         }
 
         #endregion
