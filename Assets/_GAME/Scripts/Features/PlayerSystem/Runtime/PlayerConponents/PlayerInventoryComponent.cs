@@ -1,6 +1,7 @@
 using System;
 using IKhom.EventBusSystem.Runtime;
 using Sim.Features.InventorySystem.Runtime;
+using Sim.Features.InventorySystem.Runtime.Events;
 using Sim.Features.PlayerSystem.Base;
 using UnityEngine;
 

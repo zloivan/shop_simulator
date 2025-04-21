@@ -5,22 +5,10 @@ using IKhom.EventBusSystem.Runtime;
 using IKhom.EventBusSystem.Runtime.abstractions;
 using JetBrains.Annotations;
 using Sim.Features.InventorySystem.Runtime.Base;
+using Sim.Features.InventorySystem.Runtime.Events;
 
 namespace Sim.Features.InventorySystem.Runtime
 {
-    // События инвентаря
-    public struct ItemAddedEvent : IEvent
-    {
-        public string ItemId;
-        public string InventoryId;
-    }
-
-    public struct ItemRemovedEvent : IEvent
-    {
-        public string ItemId;
-        public string InventoryId;
-    }
-
     [Serializable]
     public class Inventory : IInventory
     {
