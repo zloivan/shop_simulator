@@ -17,7 +17,7 @@ namespace Sim.Features.InventorySystem.Runtime.Testing
             name = _itemName + " " + _itemId + $" {_itemWeight}" + " (InventoryTester)";
         }
 
-        public override void Interact(IInteractor playerFacade, InputAction.CallbackContext callbackContext)
+        public override void InteractInternal(IInteractor playerFacade, InteractionType interactionType)
         {
             Debug.Log($"Попытка добавить предмет {_itemName} в инвентарь");
 

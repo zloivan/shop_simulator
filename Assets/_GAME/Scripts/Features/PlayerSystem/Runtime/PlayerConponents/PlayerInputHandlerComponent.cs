@@ -1,11 +1,13 @@
 using System;
 using JetBrains.Annotations;
+using Sim.Features.InteractionSystem.Base;
 using Sim.Features.PlayerSystem.Base;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Sim.Features.PlayerSystem.PlayerConponents
 {
+    
     public class PlayerInputHandlerComponent : MonoBehaviour, IPlayerComponent
     {
         // Событийная система для передачи ввода через фасад
@@ -13,7 +15,7 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
         [PublicAPI] public event Action<Vector2> OnLookInputChanged;
         [PublicAPI] public event Action OnJumpPressed;
         [PublicAPI] public event Action OnJumpReleased;
-        [PublicAPI] public event Action<InputAction.CallbackContext> OnInteractPressed;
+        [PublicAPI] public event Action<InteractionType> OnInteractPressed;
         [PublicAPI] public event Action OnSprintPressed;
         [PublicAPI] public event Action OnSprintReleased;
 
@@ -130,7 +132,14 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
 
         private void OnInteractPerformed(InputAction.CallbackContext context)
         {
-            OnInteractPressed?.Invoke(context);
+            if (context.action.name == _playerInputData.Player.InteractPrimary.name)
+            {
+                OnInteractPressed?.Invoke(InteractionType.Primary);
+            }
+            else if (context.action.name == _playerInputData.Player.InteractSecondary.name)
+            {
+                OnInteractPressed?.Invoke(InteractionType.Secondary);
+            }
         }
 
         private void OnSprintPerformed(InputAction.CallbackContext context)

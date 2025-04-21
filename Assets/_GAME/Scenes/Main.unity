@@ -274,6 +274,7 @@ GameObject:
   - component: {fileID: 288399257}
   - component: {fileID: 288399262}
   - component: {fileID: 288399261}
+  - component: {fileID: 288399263}
   m_Layer: 0
   m_Name: InteractableIntem (3)
   m_TagString: Untagged
@@ -376,12 +377,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 288399256}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fab48997bc9248c9857cee631b47590b, type: 3}
+  m_Script: {fileID: 11500000, guid: b2bc019e0e0f4c0f870fe5ef8dffcd02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _shouldHighlight: 1
-  _highlightColor: {r: 0, g: 1, b: 0, a: 1}
-  _highlightWidth: 2
+  _interactionType: 0
   _outline: {fileID: 288399262}
 --- !u!114 &288399262
 MonoBehaviour:
@@ -397,36 +397,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMode: 0
   outlineColor: {r: 0.42127657, g: 1, b: 0, a: 1}
-  outlineWidth: 3.96
-  precomputeOutline: 1
-  bakeKeys:
-  - {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-  bakeValues:
-  - data:
-    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.57735026, y: 0.57735026, z: 0.57735026}
-    - {x: -0.57735026, y: 0.57735026, z: 0.57735026}
-    - {x: 0.57735026, y: 0.57735026, z: -0.57735026}
-    - {x: -0.57735026, y: 0.57735026, z: -0.57735026}
-    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.57735026, y: 0.57735026, z: 0.57735026}
-    - {x: -0.57735026, y: 0.57735026, z: 0.57735026}
-    - {x: 0.57735026, y: 0.57735026, z: -0.57735026}
-    - {x: -0.57735026, y: 0.57735026, z: -0.57735026}
-    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: -0.57735026, y: 0.57735026, z: 0.57735026}
-    - {x: -0.57735026, y: 0.57735026, z: -0.57735026}
-    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.57735026, y: 0.57735026, z: -0.57735026}
-    - {x: 0.57735026, y: 0.57735026, z: 0.57735026}
-    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
+  outlineWidth: 4
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!114 &288399263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288399256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3d2ba71a92942faa0e57120f3464f42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shouldHighlight: 1
+  _interactionType: 1
+  _outline: {fileID: 288399262}
 --- !u!1 &320104977
 GameObject:
   m_ObjectHideFlags: 0
@@ -661,6 +650,7 @@ GameObject:
   - component: {fileID: 561781428}
   - component: {fileID: 561781433}
   - component: {fileID: 561781432}
+  - component: {fileID: 561781434}
   m_Layer: 0
   m_Name: InteractableIntem
   m_TagString: Untagged
@@ -763,12 +753,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 561781427}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fab48997bc9248c9857cee631b47590b, type: 3}
+  m_Script: {fileID: 11500000, guid: b2bc019e0e0f4c0f870fe5ef8dffcd02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _shouldHighlight: 1
-  _highlightColor: {r: 0, g: 1, b: 0, a: 1}
-  _highlightWidth: 2
+  _interactionType: 0
   _outline: {fileID: 561781433}
 --- !u!114 &561781433
 MonoBehaviour:
@@ -784,10 +773,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMode: 0
   outlineColor: {r: 0.21456409, g: 1, b: 0, a: 1}
-  outlineWidth: 2
+  outlineWidth: 4
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &561781434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561781427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3d2ba71a92942faa0e57120f3464f42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shouldHighlight: 1
+  _interactionType: 1
+  _outline: {fileID: 561781433}
 --- !u!1 &669441800
 GameObject:
   m_ObjectHideFlags: 0
@@ -968,6 +972,7 @@ GameObject:
   - component: {fileID: 945331068}
   - component: {fileID: 945331072}
   - component: {fileID: 945331073}
+  - component: {fileID: 945331074}
   m_Layer: 0
   m_Name: InteractableIntem (2)
   m_TagString: Untagged
@@ -1075,36 +1080,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMode: 0
   outlineColor: {r: 0.42127657, g: 1, b: 0, a: 1}
-  outlineWidth: 3.96
-  precomputeOutline: 1
-  bakeKeys:
-  - {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-  bakeValues:
-  - data:
-    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.57735026, y: 0.57735026, z: 0.57735026}
-    - {x: -0.57735026, y: 0.57735026, z: 0.57735026}
-    - {x: 0.57735026, y: 0.57735026, z: -0.57735026}
-    - {x: -0.57735026, y: 0.57735026, z: -0.57735026}
-    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.57735026, y: 0.57735026, z: 0.57735026}
-    - {x: -0.57735026, y: 0.57735026, z: 0.57735026}
-    - {x: 0.57735026, y: 0.57735026, z: -0.57735026}
-    - {x: -0.57735026, y: 0.57735026, z: -0.57735026}
-    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: -0.57735026, y: 0.57735026, z: 0.57735026}
-    - {x: -0.57735026, y: 0.57735026, z: -0.57735026}
-    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.57735026, y: 0.57735026, z: -0.57735026}
-    - {x: 0.57735026, y: 0.57735026, z: 0.57735026}
-    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
+  outlineWidth: 4
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!114 &945331073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1114,12 +1093,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 945331067}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fab48997bc9248c9857cee631b47590b, type: 3}
+  m_Script: {fileID: 11500000, guid: b2bc019e0e0f4c0f870fe5ef8dffcd02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _shouldHighlight: 1
-  _highlightColor: {r: 0, g: 1, b: 0, a: 1}
-  _highlightWidth: 2
+  _interactionType: 0
+  _outline: {fileID: 945331072}
+--- !u!114 &945331074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 945331067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3d2ba71a92942faa0e57120f3464f42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shouldHighlight: 1
+  _interactionType: 1
   _outline: {fileID: 945331072}
 --- !u!1001 &1002196200
 PrefabInstance:
@@ -1248,6 +1241,7 @@ GameObject:
   - component: {fileID: 2139611182}
   - component: {fileID: 2139611187}
   - component: {fileID: 2139611186}
+  - component: {fileID: 2139611188}
   m_Layer: 0
   m_Name: InteractableIntem (1)
   m_TagString: Untagged
@@ -1350,12 +1344,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2139611180}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fab48997bc9248c9857cee631b47590b, type: 3}
+  m_Script: {fileID: 11500000, guid: b2bc019e0e0f4c0f870fe5ef8dffcd02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _shouldHighlight: 1
-  _highlightColor: {r: 0, g: 1, b: 0, a: 1}
-  _highlightWidth: 2
+  _interactionType: 0
   _outline: {fileID: 2139611187}
 --- !u!114 &2139611187
 MonoBehaviour:
@@ -1371,36 +1364,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   outlineMode: 0
   outlineColor: {r: 0.42127657, g: 1, b: 0, a: 1}
-  outlineWidth: 3.96
-  precomputeOutline: 1
-  bakeKeys:
-  - {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
-  bakeValues:
-  - data:
-    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: 0.57735026, y: 0.57735026, z: 0.57735026}
-    - {x: -0.57735026, y: 0.57735026, z: 0.57735026}
-    - {x: 0.57735026, y: 0.57735026, z: -0.57735026}
-    - {x: -0.57735026, y: 0.57735026, z: -0.57735026}
-    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.57735026, y: 0.57735026, z: 0.57735026}
-    - {x: -0.57735026, y: 0.57735026, z: 0.57735026}
-    - {x: 0.57735026, y: 0.57735026, z: -0.57735026}
-    - {x: -0.57735026, y: 0.57735026, z: -0.57735026}
-    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: -0.57735026, y: -0.57735026, z: 0.57735026}
-    - {x: -0.57735026, y: 0.57735026, z: 0.57735026}
-    - {x: -0.57735026, y: 0.57735026, z: -0.57735026}
-    - {x: -0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.57735026, y: -0.57735026, z: -0.57735026}
-    - {x: 0.57735026, y: 0.57735026, z: -0.57735026}
-    - {x: 0.57735026, y: 0.57735026, z: 0.57735026}
-    - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
+  outlineWidth: 4
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!114 &2139611188
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2139611180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3d2ba71a92942faa0e57120f3464f42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _shouldHighlight: 1
+  _interactionType: 1
+  _outline: {fileID: 2139611187}
 --- !u!1001 &2000774484214912062
 PrefabInstance:
   m_ObjectHideFlags: 0
