@@ -7,6 +7,7 @@ namespace Sim.Features.PlayerSystem.Concrete
     {
         [Header("Настройки камеры")]
         [SerializeField] private Transform _cameraHolder;
+
         [SerializeField] private float _lookSensitivity = 1f;
         [SerializeField] private float _lookSmoothing = 0.1f;
         [SerializeField] private float _lookXLimit = 80f;
@@ -32,19 +33,6 @@ namespace Sim.Features.PlayerSystem.Concrete
             Cursor.visible = false;
         }
 
-        private void OnEnable()
-        {
-            if (_facade != null)
-            {
-                SubscribeToEvents();
-            }
-        }
-
-        private void OnDisable()
-        {
-            UnsubscribeFromEvents();
-        }
-
         private void Update()
         {
             UpdateLook();
@@ -53,43 +41,17 @@ namespace Sim.Features.PlayerSystem.Concrete
         #endregion
 
         #region IPlayerComponent Implementation
-
         public void Initialize(PlayerFacade facade)
         {
             _facade = facade;
-            SubscribeToEvents();
-        }
-
-        #endregion
-
-        #region Event Subscriptions
-
-        private void SubscribeToEvents()
-        {
-            // Подписываемся на события фасада вместо прямого обращения к другим компонентам
-            _facade.OnLookInputChanged += HandleLookInput;
-        }
-
-        private void UnsubscribeFromEvents()
-        {
-            if (_facade == null) return;
-
-            _facade.OnLookInputChanged -= HandleLookInput;
         }
 
         #endregion
 
         #region Look Logic
-
-        private void HandleLookInput(Vector2 lookInput)
-        {
-            // Данный метод вызывается при изменении ввода взгляда
-            // Здесь можно добавить дополнительную логику обработки, если необходимо
-        }
-
+        
         private void UpdateLook()
         {
-            // Применяем сглаживание к вводу взгляда
             _smoothLookInput = Vector2.SmoothDamp(
                 _smoothLookInput,
                 _facade.LookInput,
@@ -97,27 +59,14 @@ namespace Sim.Features.PlayerSystem.Concrete
                 _lookSmoothing
             );
 
-            // Расчет вращения камеры с учетом чувствительности
-            float mouseX = _smoothLookInput.x * _lookSensitivity;
-            float mouseY = _smoothLookInput.y * _lookSensitivity;
+            var mouseX = _smoothLookInput.x * _lookSensitivity;
+            var mouseY = _smoothLookInput.y * _lookSensitivity;
 
-            // Вращение по вертикали (наклон камеры)
             _rotationX -= mouseY;
             _rotationX = Mathf.Clamp(_rotationX, -_lookXLimit, _lookXLimit);
             _cameraHolder.localRotation = Quaternion.Euler(_rotationX, 0f, 0f);
 
-            // Вращение по горизонтали (поворот игрока)
             transform.rotation *= Quaternion.Euler(0f, mouseX, 0f);
-        }
-
-        #endregion
-
-        #region Public Methods
-
-        // Метод для внешнего доступа к текущему углу обзора по вертикали
-        public float GetVerticalAngle()
-        {
-            return _rotationX;
         }
 
         #endregion
