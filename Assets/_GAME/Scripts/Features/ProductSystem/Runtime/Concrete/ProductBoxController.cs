@@ -13,15 +13,16 @@ namespace Sim.Features.ProductSystem.Concrete
     /// </summary>
     public class ProductBoxController : MonoBehaviour, IInteractable
     {
-        [SerializeReference] private ProductBox _productBox;
         [SerializeField] private ProductFactory _productFactory;
 
-        [Header("Визуальные настройки")]
-        [SerializeField] private Renderer _boxRenderer;
-        [SerializeField] private Color _emptyBoxColor = Color.gray;
-        [SerializeField] private Color _filledBoxColor = Color.green;
-        [SerializeField] private Color _fullColor = Color.red;
+        // [Header("Визуальные настройки")]
+        // [SerializeField] private Renderer _boxRenderer;
+        // [SerializeField] private Color _emptyBoxColor = Color.gray;
+        // [SerializeField] private Color _filledBoxColor = Color.green;
+        // [SerializeField] private Color _fullColor = Color.red;
 
+        private ProductBox _productBox;
+        
         private void Start()
         {
             // Инициализация коробки, если не установлена
@@ -39,14 +40,14 @@ namespace Sim.Features.ProductSystem.Concrete
 
         private void UpdateBoxVisual()
         {
-            if (_boxRenderer != null)
-            {
-                _boxRenderer.material.color = _productBox.CurrentCount == _productBox.Capacity 
-                    ? _fullColor 
-                    : _productBox.CurrentCount > 0 
-                        ? _filledBoxColor 
-                        : _emptyBoxColor;
-            }
+            // if (_boxRenderer != null)
+            // {
+            //     _boxRenderer.material.color = _productBox.CurrentCount == _productBox.Capacity 
+            //         ? _fullColor 
+            //         : _productBox.CurrentCount > 0 
+            //             ? _filledBoxColor 
+            //             : _emptyBoxColor;
+            // }
         }
 
         public void InteractPrimary(PlayerFacade playerFacade)
