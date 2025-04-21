@@ -1,10 +1,9 @@
-using Sim.Features.PlayerSystem;
+using UnityEngine.InputSystem;
 
 namespace Sim.Features.InteractionSystem.Base
 {
-     public interface IInteractable
+    public interface IInteractable
     {
-        void InteractPrimary(PlayerFacade playerFacade);
-        void InteractSecondary(PlayerFacade player);
+        void Interact(IInteractor playerFacade, InputAction.CallbackContext callbackContext);
     }
 }

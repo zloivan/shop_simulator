@@ -7,17 +7,19 @@ using Sim.Features.ShopSystem.Configs;
 using Sim.Features.ShopSystem.Events;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Sim.Features.ShopSystem.Runtime.Concrete
 {
-    public class ShelfController : MonoBehaviour, IInteractable
+    public class ShelfController : InteractableBase
     {
         [SerializeField] private ShelfConfig _shelfConfig;
         [SerializeField] private ProductFactory _productFactory;
 
-        
+
         [SerializeReference, ShowInInspector, ReadOnly]
         private Shelf _shelf;
+
         private EventBinding<ShopEvents.ProductAddedToShelfEvent> _productAddedBinding;
         private EventBinding<ShopEvents.ProductRemovedFromShelfEvent> _productRemovedBinding;
 
@@ -43,7 +45,6 @@ namespace Sim.Features.ShopSystem.Runtime.Concrete
 
         private void OnProductAdded(ShopEvents.ProductAddedToShelfEvent obj)
         {
-            
         }
 
         private void OnDisable()
@@ -53,29 +54,30 @@ namespace Sim.Features.ShopSystem.Runtime.Concrete
             EventBus<ShopEvents.ProductRemovedFromShelfEvent>.Deregister(_productRemovedBinding);
         }
 
-        public void InteractPrimary(PlayerFacade playerFacade)
+        public override void Interact(IInteractor playerFacade, InputAction.CallbackContext callbackContext)
         {
+            Debug.Log(callbackContext.action);
             // Логика взятия товара с полки
-            if (_shelf.Products.Count <= 0) 
+            if (_shelf.Products.Count <= 0)
                 return;
-            
-            var product = _shelf.Products[0];
-            var playerInventory = playerFacade.Inventory;
 
-            if (playerInventory == null) 
+            var product = _shelf.Products[0];
+            var playerInventory = ((PlayerFacade)playerFacade).Inventory;
+
+            if (playerInventory == null)
                 return;
-            
-            if (!playerInventory.Inventory.AddItem(product.ToInvetoryItem())) 
+
+            if (!playerInventory.Inventory.AddItem(product.ToInvetoryItem()))
                 return;
-            
+
             _shelf.RemoveProduct(product.Id);
         }
 
-        public void InteractSecondary(PlayerFacade player)
+        public void InteractSecondary(IInteractor player)
         {
             // Получаем компонент инвентаря игрока
-            var playerInventoryComponent =  player.Inventory;
-    
+            var playerInventoryComponent = ((PlayerFacade)player).Inventory;
+
             if (playerInventoryComponent == null)
             {
                 Debug.LogWarning("У игрока нет компонента инвентаря!");
@@ -85,9 +87,9 @@ namespace Sim.Features.ShopSystem.Runtime.Concrete
             var inventory = playerInventoryComponent.Inventory;
 
             // Если в инвентаре есть предметы и на полке есть место
-            if (inventory.Items.Count <= 0 || _shelf.CurrentCount >= _shelf.Capacity) 
+            if (inventory.Items.Count <= 0 || _shelf.CurrentCount >= _shelf.Capacity)
                 return;
-            
+
             // Берем первый предмет из инвентаря
             var inventoryItem = inventory.Items[0];
 

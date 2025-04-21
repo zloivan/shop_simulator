@@ -1,7 +1,9 @@
 using System;
+using Sim.Features.InteractionSystem.Base;
 using Sim.Features.PlayerSystem.Base;
 using Sim.Features.PlayerSystem.PlayerConponents;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Sim.Features.PlayerSystem
 {
@@ -11,11 +13,11 @@ namespace Sim.Features.PlayerSystem
     [RequireComponent(typeof(PlayerLookController))]
     [RequireComponent(typeof(PlayerInteractionController))]
     [RequireComponent(typeof(PlayerInventoryComponent))]
-    public class PlayerFacade : MonoBehaviour
+    public class PlayerFacade : MonoBehaviour, IInteractor
     {
         #region События (перенаправляются от компонентов)
 
-        public event Action OnInteractPrimaryPressed;
+        public event Action<InputAction.CallbackContext > OnInteractPressed;
         public event Action OnInteractSecondaryPressed;
         public event Action OnJumpPressed;
 
@@ -108,8 +110,7 @@ namespace Sim.Features.PlayerSystem
         private void InitializeEvents()
         {
             // Перенаправляем события ввода через фасад
-            _inputHandlerComponent.OnInteractPrimaryPressed += () => OnInteractPrimaryPressed?.Invoke();
-            _inputHandlerComponent.OnInteractSecondaryPressed += () => OnInteractSecondaryPressed?.Invoke();
+            _inputHandlerComponent.OnInteractPressed += callback => OnInteractPressed?.Invoke(callback);
             _inputHandlerComponent.OnJumpPressed += () => OnJumpPressed?.Invoke();
         }
 

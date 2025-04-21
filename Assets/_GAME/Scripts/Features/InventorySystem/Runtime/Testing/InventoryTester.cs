@@ -1,11 +1,11 @@
 using Sim.Features.InteractionSystem.Base;
 using Sim.Features.PlayerSystem;
-using Sim.Features.PlayerSystem.PlayerConponents;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Sim.Features.InventorySystem.Runtime.Testing
 {
-    public class InventoryTester : MonoBehaviour, IInteractable
+    public class InventoryTester : InteractableBase
     {
         [SerializeField] private string _itemId = "test_item";
         [SerializeField] private string _itemName = "Тестовый предмет";
@@ -17,12 +17,12 @@ namespace Sim.Features.InventorySystem.Runtime.Testing
             name = _itemName + " " + _itemId + $" {_itemWeight}" + " (InventoryTester)";
         }
 
-        public void InteractPrimary(PlayerFacade playerFacade)
+        public override void Interact(IInteractor playerFacade, InputAction.CallbackContext callbackContext)
         {
             Debug.Log($"Попытка добавить предмет {_itemName} в инвентарь");
 
             // Получаем компонент инвентаря игрока
-            var playerInventory = playerFacade.GetComponent<PlayerInventoryComponent>();
+            var playerInventory = ((PlayerFacade)playerFacade).Inventory;
 
             if (playerInventory == null)
             {
@@ -50,7 +50,7 @@ namespace Sim.Features.InventorySystem.Runtime.Testing
             }
         }
 
-        public void InteractSecondary(PlayerFacade player)
+        public void InteractSecondary(IInteractor player)
         {
             Debug.Log($"Осмотр предмета: {_itemName}, вес: {_itemWeight}");
         }

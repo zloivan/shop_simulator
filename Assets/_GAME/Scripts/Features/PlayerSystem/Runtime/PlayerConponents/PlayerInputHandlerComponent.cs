@@ -13,8 +13,7 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
         [PublicAPI] public event Action<Vector2> OnLookInputChanged;
         [PublicAPI] public event Action OnJumpPressed;
         [PublicAPI] public event Action OnJumpReleased;
-        [PublicAPI] public event Action OnInteractPrimaryPressed;
-        [PublicAPI] public event Action OnInteractSecondaryPressed;
+        [PublicAPI] public event Action<InputAction.CallbackContext> OnInteractPressed;
         [PublicAPI] public event Action OnSprintPressed;
         [PublicAPI] public event Action OnSprintReleased;
 
@@ -75,8 +74,8 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
             _playerInputData.Player.Jump.performed += OnJumpPerformed;
             _playerInputData.Player.Jump.canceled += OnJumpCanceled;
 
-            _playerInputData.Player.InteractPrimary.performed += OnInteractPrimaryPerformed;
-            _playerInputData.Player.InteractSecondary.performed += OnInteractSecondaryPerformed;
+            _playerInputData.Player.InteractPrimary.performed += OnInteractPerformed;
+            _playerInputData.Player.InteractSecondary.performed += OnInteractPerformed;
 
             _playerInputData.Player.Sprint.performed += OnSprintPerformed;
             _playerInputData.Player.Sprint.canceled += OnSprintCanceled;
@@ -94,8 +93,8 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
             _playerInputData.Player.Jump.performed -= OnJumpPerformed;
             _playerInputData.Player.Jump.canceled -= OnJumpCanceled;
 
-            _playerInputData.Player.InteractPrimary.performed -= OnInteractPrimaryPerformed;
-            _playerInputData.Player.InteractSecondary.performed -= OnInteractSecondaryPerformed;
+            _playerInputData.Player.InteractPrimary.performed -= OnInteractPerformed;
+            _playerInputData.Player.InteractSecondary.performed -= OnInteractPerformed;
 
             _playerInputData.Player.Sprint.performed -= OnSprintPerformed;
             _playerInputData.Player.Sprint.canceled -= OnSprintCanceled;
@@ -129,14 +128,9 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
             OnJumpReleased?.Invoke();
         }
 
-        private void OnInteractPrimaryPerformed(InputAction.CallbackContext context)
+        private void OnInteractPerformed(InputAction.CallbackContext context)
         {
-            OnInteractPrimaryPressed?.Invoke();
-        }
-
-        private void OnInteractSecondaryPerformed(InputAction.CallbackContext context)
-        {
-            OnInteractSecondaryPressed?.Invoke();
+            OnInteractPressed?.Invoke(context);
         }
 
         private void OnSprintPerformed(InputAction.CallbackContext context)

@@ -1,6 +1,8 @@
+using System;
 using Sim.Features.InteractionSystem.Base;
 using Sim.Features.PlayerSystem.Base;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Sim.Features.PlayerSystem.PlayerConponents
 {
@@ -8,23 +10,24 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
     {
         [Header("Настройки взаимодействия")]
         [SerializeField] private float _interactionDistance = 2.5f;
+
         [SerializeField] private LayerMask _interactionLayer = ~0; // Всё по умолчанию
         [SerializeField] private Transform _interactionRayOrigin;
 
         [Header("Отладка")]
         [SerializeField] private bool _showInteractionRays = true;
+
         [SerializeField] private Color _primaryRayColor = Color.blue;
         [SerializeField] private Color _secondaryRayColor = Color.red;
 
         private PlayerFacade _facade;
         private Camera _playerCamera;
-
+        private InteractableBase _interactableBase;
         // Публичные свойства для доступа через фасад
         public float InteractionDistance => _interactionDistance;
 
         #region Unity Lifecycle
 
-        
         private void OnEnable()
         {
             if (_facade != null)
@@ -46,9 +49,9 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
         {
             _facade = facade;
             SubscribeToEvents();
-            
+
             _playerCamera = _facade.PlayerCamera;
-            
+
             if (_interactionRayOrigin == null)
             {
                 _interactionRayOrigin = _playerCamera.transform;
@@ -62,70 +65,73 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
         private void SubscribeToEvents()
         {
             // Подписываемся на события фасада вместо прямого обращения к другим компонентам
-            _facade.OnInteractPrimaryPressed += HandleInteractPrimary;
-            _facade.OnInteractSecondaryPressed += HandleInteractSecondary;
+            _facade.OnInteractPressed += HandleInteractPressed;
         }
 
         private void UnsubscribeFromEvents()
         {
             if (_facade == null) return;
 
-            _facade.OnInteractPrimaryPressed -= HandleInteractPrimary;
-            _facade.OnInteractSecondaryPressed -= HandleInteractSecondary;
+            _facade.OnInteractPressed -= HandleInteractPressed;
         }
 
         #endregion
 
         #region Interaction Logic
 
-        private void HandleInteractPrimary()
+        private void HandleInteractPressed(InputAction.CallbackContext callbackContext)
         {
-            Debug.Log("Первичное взаимодействие");
-            TryInteractPrimary();
-        }
-
-        private void HandleInteractSecondary()
-        {
-            Debug.Log("Вторичное взаимодействие");
-            TryInteractSecondary();
+            TryInteract(callbackContext);
         }
 
         // Публично доступный метод для использования через фасад
-        public void TryInteractPrimary()
+        public bool TryInteract(InputAction.CallbackContext callbackContext)
         {
             if (!Physics.Raycast(_interactionRayOrigin.position, _interactionRayOrigin.forward, out var hit,
-                    _interactionDistance, _interactionLayer)) return;
-            
-            if (!hit.collider.TryGetComponent<IInteractable>(out var interactable)) 
-                return;
-            
-            // Взаимодействуем через фасад
-            interactable.InteractPrimary(_facade);
-            Debug.Log("Первичное взаимодействие с: " + hit.collider.gameObject.name);
-        }
+                    _interactionDistance, _interactionLayer)) return false;
 
-        // Публично доступный метод для использования через фасад
-        public void TryInteractSecondary()
-        {
-            if (!Physics.Raycast(_interactionRayOrigin.position, _interactionRayOrigin.forward, out var hit,
-                    _interactionDistance, _interactionLayer)) 
-                return;
-            
-            if (!hit.collider.TryGetComponent<IInteractable>(out var interactable)) 
-                return;
-            
+            if (!hit.collider.TryGetComponent<IInteractable>(out var interactable))
+                return false;
+
             // Взаимодействуем через фасад
-            interactable.InteractSecondary(_facade);
-            Debug.Log("Вторичное взаимодействие с: " + hit.collider.gameObject.name);
+            interactable.Interact(_facade, callbackContext);
+            Debug.Log($"Взаимодействие [{callbackContext.action.name}] с: {hit.collider.gameObject.name}");
+
+            return true;
         }
 
         private void Update()
         {
             if (!Physics.Raycast(_interactionRayOrigin.position, _interactionRayOrigin.forward, out var hit,
-                    _interactionDistance, _interactionLayer)) 
+                    _interactionDistance, _interactionLayer))
+            {
+                if (_interactableBase is not null)
+                {
+                    _interactableBase.CanInteract = false;
+                }
+                
                 return;
+            }
             
+
+            if (!hit.collider.TryGetComponent<InteractableBase>(out var interactable))
+            {
+                if (_interactableBase is not null)
+                {
+                    _interactableBase.CanInteract = false;
+                }
+                
+                return;
+            }
+
+
+            if (_interactableBase is not null)
+            {
+                _interactableBase.CanInteract = false;
+            }
             
+            _interactableBase = interactable;
+            _interactableBase.CanInteract = true;
         }
 
         #endregion
