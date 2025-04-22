@@ -2,7 +2,7 @@ using JetBrains.Annotations;
 using Sim.Features.PlayerSystem.Base;
 using UnityEngine;
 
-namespace Sim.Features.PlayerSystem.PlayerConponents
+namespace Sim.Features.PlayerSystem.PlayerComponents
 {
     [RequireComponent(typeof(CharacterController))]
     public class PlayerMovementController : MonoBehaviour, IPlayerComponent

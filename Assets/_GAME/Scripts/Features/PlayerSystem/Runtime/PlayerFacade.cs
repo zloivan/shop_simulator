@@ -1,7 +1,7 @@
 using System;
 using Sim.Features.InteractionSystem.Base;
 using Sim.Features.PlayerSystem.Base;
-using Sim.Features.PlayerSystem.PlayerConponents;
+using Sim.Features.PlayerSystem.PlayerComponents;
 using UnityEngine;
 using UnityEngine.InputSystem;
 

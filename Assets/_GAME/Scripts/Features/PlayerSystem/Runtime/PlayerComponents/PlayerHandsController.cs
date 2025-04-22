@@ -1,9 +1,9 @@
-using Sim.Features.PlayerSystem.Base;
-using UnityEngine;
 using System;
 using Sim.Features.InteractionSystem.Base;
+using Sim.Features.PlayerSystem.Base;
+using UnityEngine;
 
-namespace Sim.Features.PlayerSystem.PlayerConponents
+namespace Sim.Features.PlayerSystem.PlayerComponents
 {
     public class PlayerHandsController : MonoBehaviour, IPlayerComponent
     {
