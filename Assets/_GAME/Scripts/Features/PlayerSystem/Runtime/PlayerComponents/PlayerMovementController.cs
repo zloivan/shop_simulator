@@ -97,7 +97,6 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
             if (!IsGrounded)
                 return;
 
-
             if (IsSprinting && IsRunning)
                 CurrentSpeed = _sprintSpeed;
             else if (IsRunning)

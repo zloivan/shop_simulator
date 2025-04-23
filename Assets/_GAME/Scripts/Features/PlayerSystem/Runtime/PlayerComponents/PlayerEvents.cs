@@ -55,5 +55,25 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
                 InteractionType = interactionType;
             }
         }
+
+        public readonly struct OnItemTaken : IEvent
+        {
+            public readonly GameObject Item;
+
+            public OnItemTaken(GameObject item)
+            {
+                Item = item;
+            }
+        }
+
+        public readonly struct ItemDropped : IEvent
+        {
+            public readonly GameObject Item;
+
+            public ItemDropped(GameObject droppedItem)
+            {
+                Item = droppedItem;
+            }
+        }
     }
 }

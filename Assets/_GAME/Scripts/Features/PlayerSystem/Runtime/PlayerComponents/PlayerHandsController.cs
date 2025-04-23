@@ -13,10 +13,6 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
 
         private Player _facade;
         private GameObject _itemInHands;
-
-        public event Action<GameObject> OnItemTaken;
-        public event Action<GameObject> OnItemDropped;
-
         public bool HasItemInHands => _itemInHands != null;
 
         public void Initialize(Player facade)
@@ -77,8 +73,8 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
             item.transform.SetParent(_handsTransform);
             item.transform.localPosition = Vector3.zero;
             item.transform.localRotation = Quaternion.identity;
-
-            OnItemTaken?.Invoke(item);
+            EventBus<PlayerEvents.OnItemTaken>.Raise(new PlayerEvents.OnItemTaken(item));
+           // OnItemTaken?.Invoke(item);
             return true;
         }
 
@@ -102,7 +98,8 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
                 collider.enabled = true;
 
             _itemInHands = null;
-            OnItemDropped?.Invoke(droppedItem);
+            EventBus<PlayerEvents.ItemDropped>.Raise(new PlayerEvents.ItemDropped(droppedItem));
+           // OnItemDropped?.Invoke(droppedItem);
             return droppedItem;
         }
     }
