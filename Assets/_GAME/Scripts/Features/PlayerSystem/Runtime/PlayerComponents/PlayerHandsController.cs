@@ -1,4 +1,5 @@
 using System;
+using IKhom.EventBusSystem.Runtime;
 using Sim.Features.InteractionSystem.Base;
 using Sim.Features.PlayerSystem.Base;
 using UnityEngine;
@@ -10,7 +11,7 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
         [SerializeField] private Transform _handsTransform;
         [SerializeField] private float _throwForce = 3f;
 
-        private PlayerFacade _facade;
+        private Player _facade;
         private GameObject _itemInHands;
 
         public event Action<GameObject> OnItemTaken;
@@ -18,12 +19,12 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
 
         public bool HasItemInHands => _itemInHands != null;
 
-        public void Initialize(PlayerFacade facade)
+        public void Initialize(Player facade)
         {
             _facade = facade;
 
-            // Подписываемся на события ввода через фасад
-            _facade.OnInteractPressed += HandleInteraction;
+            EventBus<PlayerEvents.PlayerInteractInput>.Register(
+                new EventBinding<PlayerEvents.PlayerInteractInput>(HandleInteraction));
 
             SetupHands();
         }
@@ -37,7 +38,7 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
                 _handsTransform.SetParent(transform);
 
                 // Размещаем перед игроком
-                var cameraTransform = _facade.PlayerCamera.transform;
+                var cameraTransform = _facade.LookController.Camera.transform;
                 if (cameraTransform != null)
                 {
                     _handsTransform.position = cameraTransform.position + cameraTransform.forward * 0.5f;
@@ -49,9 +50,9 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
             }
         }
 
-        private void HandleInteraction(InteractionType interactionType)
+        private void HandleInteraction(PlayerEvents.PlayerInteractInput playerInteractInput)
         {
-            if (interactionType == InteractionType.DropItem && HasItemInHands)
+            if (playerInteractInput.InteractionType == InteractionType.DropItem && HasItemInHands)
             {
                 DropItem();
             }
@@ -94,7 +95,7 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
             if (droppedItem.TryGetComponent<Rigidbody>(out var rb))
             {
                 rb.isKinematic = false;
-                rb.AddForce(_facade.PlayerCamera.transform.forward * _throwForce, ForceMode.Impulse);
+                rb.AddForce(_facade.LookController.Camera.transform.forward * _throwForce, ForceMode.Impulse);
             }
 
             if (droppedItem.TryGetComponent<Collider>(out var collider))

@@ -22,7 +22,7 @@ namespace Sim.Features.InventorySystem.Runtime.Testing
             Debug.Log($"Попытка добавить предмет {_itemName} в инвентарь");
 
             // Получаем компонент инвентаря игрока
-            var playerInventory = ((PlayerFacade)playerFacade).Inventory;
+            var playerInventory = ((Player)playerFacade).Inventory;
 
             if (playerInventory == null)
             {

@@ -11,7 +11,7 @@ namespace Sim.Features.UISystem.Runtime.Concrete
     {
         [SerializeField] private Image _crosshair;
         [SerializeField] private TextMeshProUGUI _interactText;
-        [FormerlySerializedAs("_playerController")] [SerializeField] private PlayerFacade _playerFacade;
+        [FormerlySerializedAs("_playerFacade")] [FormerlySerializedAs("_playerController")] [SerializeField] private Player _player;
 
         [Header("UI Colors")]
         [SerializeField] private Color _defaultCrosshairColor = Color.white;
@@ -26,23 +26,23 @@ namespace Sim.Features.UISystem.Runtime.Concrete
 
         private void Awake()
         {
-            if (_playerFacade == null)
+            if (_player == null)
             {
-                _playerFacade = FindObjectOfType<PlayerFacade>();
+                _player = FindObjectOfType<Player>();
             }
         }
 
         private void Update()
         {
-            if (_playerFacade == null)
+            if (_player == null)
             {
                 return;
             }
 
-            var playerCameraTransform = _playerFacade.PlayerCamera.transform;
+            var playerCameraTransform = _player.LookController.Camera.transform;
             
             if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out var hit,
-                    _playerFacade.InteractionDistance))
+                    _player.InteractionDistance))
             {
                 if (hit.collider.GetComponent<IInteractable>() != null)
                 {

@@ -1,3 +1,4 @@
+using IKhom.EventBusSystem.Runtime;
 using JetBrains.Annotations;
 using Sim.Features.PlayerSystem.Base;
 using UnityEngine;
@@ -18,7 +19,7 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
         [SerializeField] private float _airControl = 0.5f;
 
         private CharacterController _characterController;
-        private PlayerFacade _facade;
+        private Player _facade;
 
         // Состояние движения
         private Vector3 _verticalVelocity;
@@ -27,8 +28,11 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
         // Публичные свойства для доступа через фасад
         [PublicAPI] public Vector3 MovementDirection { get; private set; }
         [PublicAPI] public bool IsGrounded { get; private set; }
-        [PublicAPI] public bool IsRunning => _facade.IsRunning;
-        [PublicAPI] public bool IsSprinting => _facade.IsSprintPressed;
+
+        [PublicAPI] public bool IsRunning =>
+            EventBus<PlayerEvents.PlayerMoveInput>.GetLastEvent().MoveInputValue.magnitude > 0.1f;
+        [PublicAPI] public bool IsSprinting => 
+            EventBus<PlayerEvents.PlayerSprintInput>.GetLastEvent().IsSprintPressed;
         [PublicAPI] public float CurrentSpeed { get; private set; }
 
         #region Unity Lifecycle
@@ -41,10 +45,7 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
 
         private void OnEnable()
         {
-            if (_facade != null)
-            {
-                SubscribeToEvents();
-            }
+            SubscribeToEvents();
         }
 
         private void OnDisable()
@@ -62,7 +63,7 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
 
         #region IPlayerComponent Implementation
 
-        public void Initialize(PlayerFacade facade)
+        public void Initialize(Player facade)
         {
             _facade = facade;
             SubscribeToEvents();
@@ -74,14 +75,16 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
 
         private void SubscribeToEvents()
         {
-            _facade.OnJumpPressed += HandleJumpPressed;
+            EventBus<PlayerEvents.PlayerJumpInput>.Register(
+                new EventBinding<PlayerEvents.PlayerJumpInput>(HandleJumpPressed));
         }
 
         private void UnsubscribeFromEvents()
         {
             if (_facade == null) return;
 
-            _facade.OnJumpPressed -= HandleJumpPressed;
+            EventBus<PlayerEvents.PlayerJumpInput>.Deregister(
+                new EventBinding<PlayerEvents.PlayerJumpInput>(HandleJumpPressed));
         }
 
         #endregion
@@ -93,6 +96,7 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
             // Обновляем скорость в зависимости от состояния спринта и бега
             if (!IsGrounded)
                 return;
+
 
             if (IsSprinting && IsRunning)
                 CurrentSpeed = _sprintSpeed;
@@ -112,11 +116,12 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
             }
 
             // Получаем данные о движении через фасад
-            var moveInput = _facade.MoveInput;
+            var moveInput = EventBus<PlayerEvents.PlayerMoveInput>.GetLastEvent().MoveInputValue;
 
             // Расчет направления движения относительно ориентации камеры
             var move = transform.right * moveInput.x + transform.forward * moveInput.y;
-            move = Vector3.ClampMagnitude(move, 1f); // Нормализация вектора для предотвращения более быстрого диагонального движения
+            move = Vector3.ClampMagnitude(move,
+                1f); // Нормализация вектора для предотвращения более быстрого диагонального движения
             MovementDirection = move;
 
             // Применение уменьшения управления в воздухе
@@ -144,10 +149,14 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
 
         #region Input Handlers
 
-        private void HandleJumpPressed()
+        private void HandleJumpPressed(PlayerEvents.PlayerJumpInput playerJumpInput)
         {
-            _wantsToJump = true;
+            if (playerJumpInput.IsJumpPressed && IsGrounded)
+            {
+                _wantsToJump = true;
+            }
         }
+
         #endregion
     }
 }
