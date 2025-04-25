@@ -220,7 +220,7 @@ GameObject:
   - component: {fileID: 7266672979106977127}
   - component: {fileID: 4868772320746256421}
   m_Layer: 5
-  m_Name: InteractionUI
+  m_Name: pfb_UI_Screens_Hud
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

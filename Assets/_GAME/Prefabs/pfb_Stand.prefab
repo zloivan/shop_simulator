@@ -354,7 +354,7 @@ GameObject:
   m_Component:
   - component: {fileID: 19867290724230571}
   m_Layer: 0
-  m_Name: Stand
+  m_Name: pfb_Stand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -156,7 +156,7 @@ GameObject:
   - component: {fileID: 2765203964066726808}
   - component: {fileID: 695811297887676838}
   m_Layer: 0
-  m_Name: Player
+  m_Name: pfb_Player
   m_TagString: Player
   m_Icon: {fileID: 2800000, guid: e1da124f7cbda41a4925397406076a42, type: 3}
   m_NavMeshLayer: 0

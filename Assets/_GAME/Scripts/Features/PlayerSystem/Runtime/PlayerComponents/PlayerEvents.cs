@@ -75,5 +75,15 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
                 Item = droppedItem;
             }
         }
+        
+        public readonly struct PlayerMovementDisabled : IEvent
+        {
+            public readonly bool IsDisabled;
+
+            public PlayerMovementDisabled(bool isDisabled)
+            {
+                IsDisabled = isDisabled;
+            }
+        }
     }
 }
