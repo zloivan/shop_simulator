@@ -47,15 +47,21 @@ namespace Sim.Features.ConveyorBeltSystem
         {
             _isPlayerAtBelt = true;
             InteractionsEnabled = false;
+    
             // Отключаем передвижение игрока
             EventBus<PlayerEvents.PlayerMovementDisabled>.Raise(new PlayerEvents.PlayerMovementDisabled(true));
-            
+    
             // Перемещаем игрока к кассе
             _player.transform.position = _cameraPosition.position;
             _player.transform.rotation = _cameraPosition.rotation;
 
-            // Устанавливаем ограничения поворота камеры
-            _lookController.SetLookRestrictions(-_lookXLimit, _lookXLimit, -_lookYLimit, _lookYLimit);
+            // Устанавливаем ограничения поворота камеры, используя _cameraPosition как опорную точку
+            _lookController.SetLookRestrictions(
+                -_lookXLimit, 
+                _lookXLimit, 
+                -_lookYLimit, 
+                _lookYLimit, 
+                _cameraPosition); // Передаем опорный трансформ
         }
 
         private void HandleInteractInput(PlayerEvents.PlayerInteractInput interactInput)
