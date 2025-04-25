@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4189922612508816228}
   - component: {fileID: 2874205745310403922}
   m_Layer: 0
-  m_Name: ProductBox
+  m_Name: pfb_ProductBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
