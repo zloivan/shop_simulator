@@ -24,6 +24,7 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
         // Состояние движения
         private Vector3 _verticalVelocity;
         private bool _wantsToJump;
+        private bool _isMovementDisabled = false;
 
         // Публичные свойства для доступа через фасад
         [PublicAPI] public Vector3 MovementDirection { get; private set; }
@@ -77,6 +78,9 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
         {
             EventBus<PlayerEvents.PlayerJumpInput>.Register(
                 new EventBinding<PlayerEvents.PlayerJumpInput>(HandleJumpPressed));
+            
+            EventBus<PlayerEvents.PlayerMovementDisabled>.Register(
+                new EventBinding<PlayerEvents.PlayerMovementDisabled>(HandleMovementDisabled));
         }
 
         private void UnsubscribeFromEvents()
@@ -85,6 +89,14 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
 
             EventBus<PlayerEvents.PlayerJumpInput>.Deregister(
                 new EventBinding<PlayerEvents.PlayerJumpInput>(HandleJumpPressed));
+            
+            EventBus<PlayerEvents.PlayerMovementDisabled>.Deregister(
+                new EventBinding<PlayerEvents.PlayerMovementDisabled>(HandleMovementDisabled));
+        }
+        
+        private void HandleMovementDisabled(PlayerEvents.PlayerMovementDisabled evt)
+        {
+            _isMovementDisabled = evt.IsDisabled;
         }
 
         #endregion
@@ -107,6 +119,8 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
 
         private void HandleMovement()
         {
+            if (_isMovementDisabled) return;
+            
             IsGrounded = _characterController.isGrounded;
 
             if (IsGrounded && _verticalVelocity.y < 0)

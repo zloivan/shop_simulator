@@ -38,11 +38,12 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
             _playerInputData.Enable();
             SetupInputHandlers();
 
-            _interactionMap = new Dictionary<string, InteractionType>()
+            _interactionMap = new Dictionary<string, InteractionType>
             {
                 { nameof(PlayerInputData.PlayerActions.InteractPrimary), InteractionType.Primary },
                 { nameof(PlayerInputData.PlayerActions.InteractSecondary), InteractionType.Secondary },
-                { nameof(PlayerInputData.PlayerActions.DropItem), InteractionType.DropItem }
+                { nameof(PlayerInputData.PlayerActions.DropItem), InteractionType.DropItem },
+                { nameof(PlayerInputData.PlayerActions.Cancel), InteractionType.Cancel }
             };
 
             ;
@@ -67,6 +68,7 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
             _playerInputData.Player.InteractPrimary.performed += OnInteractPerformed;
             _playerInputData.Player.InteractSecondary.performed += OnInteractPerformed;
             _playerInputData.Player.DropItem.performed += OnInteractPerformed;
+            _playerInputData.Player.Cancel.performed += OnInteractPerformed;
 
             _playerInputData.Player.Sprint.performed += OnSprintPerformed;
             _playerInputData.Player.Sprint.canceled += OnSprintCanceled;

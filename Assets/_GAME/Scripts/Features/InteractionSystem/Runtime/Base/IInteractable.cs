@@ -9,6 +9,7 @@ namespace Sim.Features.InteractionSystem.Base
         OpenBox,
         Disasasemble,
         PlaceItem,
+        Cancel
     }
     public interface IInteractable
     {
