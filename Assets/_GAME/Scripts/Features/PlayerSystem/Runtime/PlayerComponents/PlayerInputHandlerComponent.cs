@@ -1,36 +1,16 @@
 using System;
 using System.Collections.Generic;
-using JetBrains.Annotations;
+using IKhom.EventBusSystem.Runtime;
 using Sim.Features.InteractionSystem.Base;
 using Sim.Features.PlayerSystem.Base;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Sim.Features.PlayerSystem.PlayerConponents
+namespace Sim.Features.PlayerSystem.PlayerComponents
 {
     public class PlayerInputHandlerComponent : MonoBehaviour, IPlayerComponent
     {
-        // Событийная система для передачи ввода через фасад
-        [PublicAPI] public event Action<Vector2> OnMoveInputChanged;
-        [PublicAPI] public event Action<Vector2> OnLookInputChanged;
-        [PublicAPI] public event Action OnJumpPressed;
-        [PublicAPI] public event Action OnJumpReleased;
-        [PublicAPI] public event Action<InteractionType> OnInteractPressed;
-        [PublicAPI] public event Action OnSprintPressed;
-        [PublicAPI] public event Action OnSprintReleased;
-
-        // Свойства для доступа к значениям ввода через фасад
-        [PublicAPI] public Vector2 MoveInput { get; private set; }
-        [PublicAPI] public Vector2 LookInput { get; private set; }
-        [PublicAPI] public bool IsJumpPressed { get; private set; }
-        [PublicAPI] public bool IsSprintPressed { get; private set; }
-        [PublicAPI] public bool IsRunning => MoveInput.magnitude > 0.1f;
-
         [SerializeField] private bool _isDebug;
-        
-
-        // Ссылка на фасад
-        private PlayerFacade _facade;
 
         // Система ввода Unity
         private PlayerInputData _playerInputData;
@@ -52,9 +32,8 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
 
         #region IPlayerComponent Implementation
 
-        public void Initialize(PlayerFacade facade)
+        public void Initialize(Player facade)
         {
-            _facade = facade;
             _playerInputData = new PlayerInputData();
             _playerInputData.Enable();
             SetupInputHandlers();
@@ -65,6 +44,8 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
                 { nameof(PlayerInputData.PlayerActions.InteractSecondary), InteractionType.Secondary },
                 { nameof(PlayerInputData.PlayerActions.DropItem), InteractionType.DropItem }
             };
+
+            ;
         }
 
         #endregion
@@ -97,51 +78,48 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
 
         private void OnMoveInput(InputAction.CallbackContext context)
         {
-            MoveInput = context.ReadValue<Vector2>();
-            OnMoveInputChanged?.Invoke(MoveInput);
+            var moveInput = context.ReadValue<Vector2>();
+
+            EventBus<PlayerEvents.PlayerMoveInput>.Raise(new PlayerEvents.PlayerMoveInput(moveInput));
         }
 
         private void OnLookInput(InputAction.CallbackContext context)
         {
-            LookInput = context.ReadValue<Vector2>();
-            OnLookInputChanged?.Invoke(LookInput);
+            var lookInput = context.ReadValue<Vector2>();
+            EventBus<PlayerEvents.PlayerLookInput>.Raise(new PlayerEvents.PlayerLookInput(lookInput));
         }
 
         private void OnJumpPerformed(InputAction.CallbackContext context)
         {
-            IsJumpPressed = true;
-            OnJumpPressed?.Invoke();
+            EventBus<PlayerEvents.PlayerJumpInput>.Raise(new PlayerEvents.PlayerJumpInput(true));
         }
 
         private void OnJumpCanceled(InputAction.CallbackContext context)
         {
-            IsJumpPressed = false;
-            OnJumpReleased?.Invoke();
+            EventBus<PlayerEvents.PlayerJumpInput>.Raise(new PlayerEvents.PlayerJumpInput(false));
         }
 
         private void OnInteractPerformed(InputAction.CallbackContext context)
         {
-            if (_interactionMap.TryGetValue(context.action.name, out var interactionType))
+            if (!_interactionMap.TryGetValue(context.action.name, out var interactionType))
+                return;
+
+            if (_isDebug)
             {
-                if (_isDebug)
-                {
-                    Debug.Log(interactionType);
-                }
-                
-                OnInteractPressed?.Invoke(interactionType);
+                Debug.Log(interactionType);
             }
+
+            EventBus<PlayerEvents.PlayerInteractInput>.Raise(new PlayerEvents.PlayerInteractInput(interactionType));
         }
 
         private void OnSprintPerformed(InputAction.CallbackContext context)
         {
-            IsSprintPressed = true;
-            OnSprintPressed?.Invoke();
+            EventBus<PlayerEvents.PlayerSprintInput>.Raise(new PlayerEvents.PlayerSprintInput(true));
         }
 
         private void OnSprintCanceled(InputAction.CallbackContext context)
         {
-            IsSprintPressed = false;
-            OnSprintReleased?.Invoke();
+            EventBus<PlayerEvents.PlayerSprintInput>.Raise(new PlayerEvents.PlayerSprintInput(false));
         }
 
         #endregion

@@ -10,7 +10,7 @@ namespace Sim.Features.InteractionSystem
         {
             Debug.Log($"Взаимодействие с {name} типа ({nameof(PickableInteractable)})");
             
-            var playerFacade = interactor as PlayerFacade;
+            var playerFacade = interactor as Player;
             if (playerFacade == null) 
                 return;
         

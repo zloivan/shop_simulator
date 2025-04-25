@@ -1,8 +1,9 @@
+using IKhom.EventBusSystem.Runtime;
 using Sim.Features.InteractionSystem.Base;
 using Sim.Features.PlayerSystem.Base;
 using UnityEngine;
 
-namespace Sim.Features.PlayerSystem.PlayerConponents
+namespace Sim.Features.PlayerSystem.PlayerComponents
 {
     public class PlayerInteractionController : MonoBehaviour, IPlayerComponent
     {
@@ -18,7 +19,7 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
         [SerializeField] private Color _primaryRayColor = Color.blue;
         [SerializeField] private Color _secondaryRayColor = Color.red;
 
-        private PlayerFacade _facade;
+        private Player _facade;
         private Camera _playerCamera;
 
         private InteractableBase _interactableBase;
@@ -45,12 +46,12 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
 
         #region IPlayerComponent Implementation
 
-        public void Initialize(PlayerFacade facade)
+        public void Initialize(Player facade)
         {
             _facade = facade;
             SubscribeToEvents();
 
-            _playerCamera = _facade.PlayerCamera;
+            _playerCamera = _facade.LookController.Camera;
 
             if (_interactionRayOrigin == null)
             {
@@ -64,27 +65,26 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
 
         private void SubscribeToEvents()
         {
-            // Подписываемся на события фасада вместо прямого обращения к другим компонентам
-            _facade.OnInteractPressed += HandleInteractPressed;
+            EventBus<PlayerEvents.PlayerInteractInput>.Register(
+                new EventBinding<PlayerEvents.PlayerInteractInput>(HandleInteractPressed));
         }
 
         private void UnsubscribeFromEvents()
         {
             if (_facade == null) return;
-
-            _facade.OnInteractPressed -= HandleInteractPressed;
+            EventBus<PlayerEvents.PlayerInteractInput>.Deregister(
+                new EventBinding<PlayerEvents.PlayerInteractInput>(HandleInteractPressed));
         }
 
         #endregion
 
         #region Interaction Logic
 
-        private void HandleInteractPressed(InteractionType callbackContext)
+        private void HandleInteractPressed(PlayerEvents.PlayerInteractInput playerInteractInput)
         {
-            TryInteract(callbackContext);
+            TryInteract(playerInteractInput.InteractionType);
         }
 
-        // Публично доступный метод для использования через фасад
         private bool TryInteract(InteractionType interactionType)
         {
             if (!Physics.Raycast(_interactionRayOrigin.position, _interactionRayOrigin.forward, out var hit,

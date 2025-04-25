@@ -147,7 +147,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "7a670122a980b56d2b1395a32e11905d03fb171e"
+      "hash": "1f9b61b837293c0e02eb79e79cc193d9fa16cdb6"
     },
     "com.zloivan.extensions": {
       "version": "git@github.com:zloivan/extensions-library.git",

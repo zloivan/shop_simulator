@@ -1,23 +1,28 @@
+using IKhom.EventBusSystem.Runtime;
 using Sim.Features.PlayerSystem.Base;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
-namespace Sim.Features.PlayerSystem.PlayerConponents
+namespace Sim.Features.PlayerSystem.PlayerComponents
 {
     public class PlayerLookController : MonoBehaviour, IPlayerComponent
     {
         [Header("Настройки камеры")]
         [SerializeField] private Transform _cameraHolder;
-
         [SerializeField] private float _lookSensitivity = 1f;
         [SerializeField] private float _lookSmoothing = 0.1f;
         [SerializeField] private float _lookXLimit = 80f;
-
-        private PlayerFacade _facade;
+        [SerializeField] private Camera _camera;
+        
+        private Player _facade;
         private float _rotationX = 0f;
 
         // Значения для сглаживания
         private Vector2 _smoothLookInput;
         private Vector2 _lookInputVelocity;
+
+        public Camera Camera => _camera;
 
         #region Unity Lifecycle
 
@@ -41,7 +46,7 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
         #endregion
 
         #region IPlayerComponent Implementation
-        public void Initialize(PlayerFacade facade)
+        public void Initialize(Player facade)
         {
             _facade = facade;
         }
@@ -52,9 +57,10 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
         
         private void UpdateLook()
         {
+            var lookInput = EventBus<PlayerEvents.PlayerLookInput>.GetLastEvent().LookInputValue;
             _smoothLookInput = Vector2.SmoothDamp(
                 _smoothLookInput,
-                _facade.LookInput,
+                lookInput,
                 ref _lookInputVelocity,
                 _lookSmoothing
             );

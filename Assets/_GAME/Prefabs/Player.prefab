@@ -278,8 +278,8 @@ MonoBehaviour:
   _walkSpeed: 5
   _runSpeed: 7
   _sprintSpeed: 10
-  _jumpForce: 5
-  _gravity: -19.62
+  _jumpForce: 2
+  _gravity: -40
   _airControl: 0.5
 --- !u!114 &3400640181533165303
 MonoBehaviour:
@@ -297,6 +297,7 @@ MonoBehaviour:
   _lookSensitivity: 1
   _lookSmoothing: 0
   _lookXLimit: 80
+  _camera: {fileID: 8899617546936366673}
 --- !u!114 &7029691447985867401
 MonoBehaviour:
   m_ObjectHideFlags: 0

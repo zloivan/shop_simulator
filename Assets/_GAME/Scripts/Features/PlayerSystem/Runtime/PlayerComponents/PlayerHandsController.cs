@@ -1,29 +1,26 @@
+using System;
+using IKhom.EventBusSystem.Runtime;
+using Sim.Features.InteractionSystem.Base;
 using Sim.Features.PlayerSystem.Base;
 using UnityEngine;
-using System;
-using Sim.Features.InteractionSystem.Base;
 
-namespace Sim.Features.PlayerSystem.PlayerConponents
+namespace Sim.Features.PlayerSystem.PlayerComponents
 {
     public class PlayerHandsController : MonoBehaviour, IPlayerComponent
     {
         [SerializeField] private Transform _handsTransform;
         [SerializeField] private float _throwForce = 3f;
 
-        private PlayerFacade _facade;
+        private Player _facade;
         private GameObject _itemInHands;
-
-        public event Action<GameObject> OnItemTaken;
-        public event Action<GameObject> OnItemDropped;
-
         public bool HasItemInHands => _itemInHands != null;
 
-        public void Initialize(PlayerFacade facade)
+        public void Initialize(Player facade)
         {
             _facade = facade;
 
-            // Подписываемся на события ввода через фасад
-            _facade.OnInteractPressed += HandleInteraction;
+            EventBus<PlayerEvents.PlayerInteractInput>.Register(
+                new EventBinding<PlayerEvents.PlayerInteractInput>(HandleInteraction));
 
             SetupHands();
         }
@@ -37,7 +34,7 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
                 _handsTransform.SetParent(transform);
 
                 // Размещаем перед игроком
-                var cameraTransform = _facade.PlayerCamera.transform;
+                var cameraTransform = _facade.LookController.Camera.transform;
                 if (cameraTransform != null)
                 {
                     _handsTransform.position = cameraTransform.position + cameraTransform.forward * 0.5f;
@@ -49,9 +46,9 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
             }
         }
 
-        private void HandleInteraction(InteractionType interactionType)
+        private void HandleInteraction(PlayerEvents.PlayerInteractInput playerInteractInput)
         {
-            if (interactionType == InteractionType.DropItem && HasItemInHands)
+            if (playerInteractInput.InteractionType == InteractionType.DropItem && HasItemInHands)
             {
                 DropItem();
             }
@@ -76,8 +73,8 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
             item.transform.SetParent(_handsTransform);
             item.transform.localPosition = Vector3.zero;
             item.transform.localRotation = Quaternion.identity;
-
-            OnItemTaken?.Invoke(item);
+            EventBus<PlayerEvents.OnItemTaken>.Raise(new PlayerEvents.OnItemTaken(item));
+           // OnItemTaken?.Invoke(item);
             return true;
         }
 
@@ -94,14 +91,15 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
             if (droppedItem.TryGetComponent<Rigidbody>(out var rb))
             {
                 rb.isKinematic = false;
-                rb.AddForce(_facade.PlayerCamera.transform.forward * _throwForce, ForceMode.Impulse);
+                rb.AddForce(_facade.LookController.Camera.transform.forward * _throwForce, ForceMode.Impulse);
             }
 
             if (droppedItem.TryGetComponent<Collider>(out var collider))
                 collider.enabled = true;
 
             _itemInHands = null;
-            OnItemDropped?.Invoke(droppedItem);
+            EventBus<PlayerEvents.ItemDropped>.Raise(new PlayerEvents.ItemDropped(droppedItem));
+           // OnItemDropped?.Invoke(droppedItem);
             return droppedItem;
         }
     }

@@ -5,14 +5,14 @@ using Sim.Features.InventorySystem.Runtime.Events;
 using Sim.Features.PlayerSystem.Base;
 using UnityEngine;
 
-namespace Sim.Features.PlayerSystem.PlayerConponents
+namespace Sim.Features.PlayerSystem.PlayerComponents
 {
     public class PlayerInventoryComponent : MonoBehaviour, IPlayerComponent
     {
         [SerializeField] private float _maxInventoryWeight = 10f;
         [SerializeField] private int _inventoryCapacity = 20;
 
-        private PlayerFacade _facade;
+        private Player _facade;
         private EventBinding<ItemAddedEvent> _itemAddedBinding;
         private EventBinding<ItemRemovedEvent> _itemRemovedBinding;
 
@@ -47,7 +47,7 @@ namespace Sim.Features.PlayerSystem.PlayerConponents
 
         #region IPlayerComponent Implementation
 
-        public void Initialize(PlayerFacade facade)
+        public void Initialize(Player facade)
         {
             _facade = facade;
         }

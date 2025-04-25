@@ -59,7 +59,7 @@ namespace Sim.Features.ShopSystem.Runtime.Concrete
                 return;
 
             var product = _shelf.Products[0];
-            var playerInventory = ((PlayerFacade)playerFacade).Inventory;
+            var playerInventory = ((Player)playerFacade).Inventory;
 
             if (playerInventory == null)
                 return;

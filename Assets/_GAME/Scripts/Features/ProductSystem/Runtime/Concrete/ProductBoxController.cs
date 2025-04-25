@@ -37,7 +37,7 @@ namespace Sim.Features.ProductSystem.Concrete
 
         public override void InteractInternal(IInteractor playerFacade)
         {
-            var playerInventory = ((PlayerFacade)playerFacade).Inventory;
+            var playerInventory = ((Player)playerFacade).Inventory;
 
             if (playerInventory == null)
             {
