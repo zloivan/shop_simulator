@@ -76,23 +76,26 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
             // Применяем ограничения, если они установлены
             if (_hasLookRestrictions)
             {
-                // Ограничиваем вертикальный угол
-                _rotationX = Mathf.Clamp(_rotationX, _restrictedLookYMin, _restrictedLookYMax);
-        
-                // Применяем вертикальный угол к держателю камеры
-                _cameraHolder.localRotation = Quaternion.Euler(_rotationX, 0f, 0f);
-        
-                // Для горизонтального поворота требуется другой подход
-                float currentYRotation = transform.eulerAngles.y;
-                // Нормализуем угол
-                if (currentYRotation > 180)
-                    currentYRotation -= 360;
-            
-                float newYRotation = currentYRotation + mouseX;
-                newYRotation = Mathf.Clamp(newYRotation, _restrictedLookXMin, _restrictedLookXMax);
-        
-                // Устанавливаем горизонтальный поворот
-                transform.rotation = Quaternion.Euler(0f, newYRotation, 0f);
+                // Поворачиваем в локальном пространстве относительно опорной точки
+                Quaternion invRefRotation = Quaternion.Inverse(_referenceRotation);
+                Quaternion localRotation = invRefRotation * transform.rotation;
+    
+                // Извлекаем углы Эйлера из локального вращения
+                Vector3 localEulerAngles = localRotation.eulerAngles;
+    
+                // Нормализуем углы в диапазон -180..180
+                float localYaw = localEulerAngles.y > 180 ? localEulerAngles.y - 360 : localEulerAngles.y;
+    
+                // Применяем ограничения к локальным углам
+                float newLocalYaw = Mathf.Clamp(localYaw + mouseX, _restrictedLookXMin, _restrictedLookXMax);
+    
+                // Создаем новое локальное вращение и преобразуем обратно в глобальное
+                Quaternion newLocalRotation = Quaternion.Euler(0, newLocalYaw, 0);
+                transform.rotation = _referenceRotation * newLocalRotation;
+    
+                // Обрабатываем вертикальное вращение камеры
+                _rotationX = Mathf.Clamp(_rotationX - mouseY, _restrictedLookYMin, _restrictedLookYMax);
+                _cameraHolder.localRotation = Quaternion.Euler(_rotationX, 0, 0);
             }
             else
             {
@@ -108,13 +111,21 @@ namespace Sim.Features.PlayerSystem.PlayerComponents
      
     
         // Публичные методы для установки и снятия ограничений
-        public void SetLookRestrictions(float xMin, float xMax, float yMin, float yMax)
+        private Quaternion _referenceRotation;
+
+        public void SetLookRestrictions(float xMin, float xMax, float yMin, float yMax, Transform referenceTransform = null)
         {
             _hasLookRestrictions = true;
             _restrictedLookXMin = xMin;
             _restrictedLookXMax = xMax;
             _restrictedLookYMin = yMin;
             _restrictedLookYMax = yMax;
+    
+            // Если задан опорный трансформ, используем его поворот как базовый
+            if (referenceTransform != null)
+                _referenceRotation = referenceTransform.rotation;
+            else
+                _referenceRotation = Quaternion.identity;
         }
         
         public void ClearLookRestrictions()
