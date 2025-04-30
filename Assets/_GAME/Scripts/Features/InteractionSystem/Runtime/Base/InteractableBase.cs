@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using IKhom.ExtensionsLibrary.Runtime;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Sim.Features.InteractionSystem.Base
@@ -12,7 +13,7 @@ namespace Sim.Features.InteractionSystem.Base
         [SerializeField, HideInInspector] private Outline _outline;
         private bool _canInteract;
         private Collider _collider;
-        private bool _interactionsEnabled = true;
+        [ReadOnly][ShowInInspector]private bool _interactionsEnabled = true;
 
         protected virtual void Awake()
         {
