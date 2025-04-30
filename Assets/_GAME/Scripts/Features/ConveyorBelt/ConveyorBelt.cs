@@ -56,7 +56,7 @@ namespace Sim.Features.ConveyorBeltSystem
             _player.transform.rotation = _cameraPosition.rotation;
 
             // Устанавливаем ограничения поворота камеры, используя _cameraPosition как опорную точку
-            _lookController.SetLookRestrictions(
+            _lookController.RestrictCamera(
                 -_lookXLimit, 
                 _lookXLimit, 
                 -_lookYLimit, 
@@ -83,7 +83,7 @@ namespace Sim.Features.ConveyorBeltSystem
             _isPlayerAtBelt = false;
 
             // Снимаем ограничения поворота камеры
-            _lookController.ClearLookRestrictions();
+            _lookController.ReturnToPreviousState();
 
             // Возвращаем игрока в исходную позицию
             _player.transform.position = _originalPlayerPosition;
